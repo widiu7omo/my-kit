@@ -7,11 +7,8 @@
 <div class="relative">
 	<div class="relative inline-block">
 		<span class="badge-icon badge-filled-secondary absolute -top-1 -right-1 z-10">2</span>
-		<button
-			class="btn btn-sm btn-ghost-surface"
-			use:menu={{ menu: 'notifications-menu', interactive: true }}
-		>
-			<BellIcon />
+		<button class="btn btn-sm" use:menu={{ menu: 'notifications-menu', interactive: true }}>
+			<BellIcon class="w-6 h-6" />
 		</button>
 	</div>
 	<div class="mt-3 card w-[24rem] shadow" data-menu="notifications-menu">

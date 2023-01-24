@@ -8,16 +8,19 @@
 	};
 	import PanelNotifications from './PanelNotifications.svelte';
 	import PanelProfile from './PanelProfile.svelte';
+	import Breadcrumbs from '$lib/components/commons/Breadcrumbs.svelte';
 </script>
 
-<AppBar>
+<AppBar padding="px-4 py-0">
 	<svelte:fragment slot="lead">
 		<button on:click={handleSidebarToggle}>
 			<MenuBarIcon />
 		</button>
 	</svelte:fragment>
+	<span class="block border-l border-surface-400-500-token h-16" />
 	<svelte:fragment slot="trail">
 		<PanelNotifications />
 		<PanelProfile />
 	</svelte:fragment>
 </AppBar>
+<Breadcrumbs />
