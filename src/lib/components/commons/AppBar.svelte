@@ -6,6 +6,8 @@
 	const handleSidebarToggle = () => {
 		storeSidebarOpen.set(!$storeSidebarOpen);
 	};
+	import PanelNotifications from './PanelNotifications.svelte';
+	import PanelProfile from './PanelProfile.svelte';
 </script>
 
 <AppBar>
@@ -15,16 +17,7 @@
 		</button>
 	</svelte:fragment>
 	<svelte:fragment slot="trail">
-		<a class="btn btn-sm btn-ghost-surface" href="#" rel="noreferrer">
-			<BellIcon />
-		</a>
-		<button class="btn btn-sm p-0">
-			<Avatar
-				src="https://i.pravatar.cc/"
-				width="w-10"
-				rounded="rounded-full"
-				border="border-none"
-			/>
-		</button>
+		<PanelNotifications />
+		<PanelProfile />
 	</svelte:fragment>
 </AppBar>
