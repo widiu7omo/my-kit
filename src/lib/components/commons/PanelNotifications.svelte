@@ -13,7 +13,7 @@
 	</div>
 	<div class="mt-3 card w-[24rem] shadow" data-menu="notifications-menu">
 		<div class="card-body !p-0">
-			<dl class="list-dl">
+			<dl class="list-dl p-2">
 				<a href="/">
 					<div class="bg-primary-hover-token">
 						<span class="badge bg-primary-500">
