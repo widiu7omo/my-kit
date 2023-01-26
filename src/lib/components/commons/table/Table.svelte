@@ -6,6 +6,11 @@
 		filterable?: boolean;
 		width?: number | undefined;
 	}
+	export interface ParamsQuery {
+		query?: string;
+		limit?: number;
+		offset?: number;
+	}
 </script>
 
 <script lang="ts">
@@ -32,9 +37,13 @@
 	import { browser } from '$app/environment';
 	import { debounce } from '$lib/helpers/ui';
 	const dispatch = createEventDispatcher();
-
+	let pageSizes = [5, 10, 15, 25, 50, 100].map((item) => ({ id: item, value: item }));
+	//Take first of pageSizes to be initial page Size
 	const table = createTable(dataTable, {
-		page: addPagination({ initialPageSize: 5, serverSide: true }),
+		page: addPagination({
+			initialPageSize: pageSizes[0].value,
+			serverSide: true
+		}),
 		sort: addSortBy({ serverSide: true }),
 		filter: addTableFilter({ serverSide: true }),
 		select: addSelectedRows(),
@@ -45,13 +54,32 @@
 		table.createViewModel(columnsGenerator());
 	const { pageSize, hasNextPage, hasPreviousPage, pageIndex, pageCount, serverItemCount } =
 		pluginStates.page;
-	$: console.log($serverItemCount);
+	$: console.log($pageCount);
+	$: console.log($pageSize);
 	const { somePageRowsSelected, allPageRowsSelected, allRowsSelected } = pluginStates.select;
 	const { filterValue } = pluginStates.filter;
+	let params: ParamsQuery = {};
 	onMount(() => {
-		filterValue.subscribe(debounce((query: string) => dispatch('search', query)));
+		$serverItemCount = $dataTable.length;
+		filterValue.subscribe(
+			debounce((query: string) => {
+				params = {
+					...params,
+					query
+				};
+				dispatch('load', params);
+			})
+		);
+		pageSize.subscribe(
+			debounce((limit: number) => {
+				params = {
+					...params,
+					limit
+				};
+				dispatch('load', params);
+			})
+		);
 	});
-	let pageSizes = [5, 10, 15, 25, 50, 100].map((item) => ({ id: item, value: item }));
 	function columnsGenerator() {
 		const arrColumns = columns.map((col) => {
 			return table.column({
@@ -186,7 +214,9 @@
 		<tbody {...$tableBodyAttrs}>
 			{#if loading}
 				<tr>
-					<td>Loading...</td>
+					<td rowspan="2" colspan={columns.length + 2} class="text-center h-40"
+						>Please wait, fetching the data...</td
+					>
 				</tr>
 			{:else}
 				{#each $pageRows as row (row.id)}

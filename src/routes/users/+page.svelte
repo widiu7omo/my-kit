@@ -14,7 +14,10 @@
 	import toast from 'svelte-french-toast';
 	import { getInvocationMessage, isJson } from '$lib/helpers/data';
 	import { writable } from 'svelte/store';
-	import Table, { type ColumnTable } from '$lib/components/commons/table/Table.svelte';
+	import Table, {
+		type ColumnTable,
+		type ParamsQuery
+	} from '$lib/components/commons/table/Table.svelte';
 	import type { CustomEventProps } from '$lib/components/commons/table/TableActions.svelte';
 	import { modalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
 	import { browser } from '$app/environment';
@@ -23,12 +26,13 @@
 	let loading = false;
 	let busy = false;
 	const dataTable = writable(data.users);
-	const loadData = async (query?: string, limit?: number, offset?: number) => {
+
+	const loadData = async (params?: ParamsQuery) => {
 		loading = true;
 		$dataTable = await trpc($page).users.list.query({
-			query,
-			limit,
-			offset
+			query: params?.query,
+			limit: params?.limit,
+			offset: params?.offset
 		});
 		loading = false;
 	};
@@ -127,7 +131,7 @@
 			busy = false;
 		}
 	};
-	const handleSearchData = (e: CustomEvent) => {
+	const handleLoadData = (e: CustomEvent) => {
 		loadData(e.detail);
 	};
 </script>
@@ -153,7 +157,7 @@
 			bind:loading
 			on:delete={handleDelete}
 			on:edit={handleModalEditOpen}
-			on:search={handleSearchData}
+			on:load={handleLoadData}
 		/>
 	</div>
 	<!-- <div>
