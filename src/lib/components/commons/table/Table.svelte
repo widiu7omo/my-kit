@@ -25,19 +25,20 @@
 	import TableCheckbox from './TableCheckbox.svelte';
 	import ChevronDown from '../../icons/ChevronDown.svelte';
 	import ChveronUp from '../../icons/ChveronUp.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	import TableActions, { type CustomEventProps } from './TableActions.svelte';
 	import SearchIcon from '$lib/components/icons/SearchIcon.svelte';
 	import { type ModalSettings, modalStore } from '@skeletonlabs/skeleton';
 	import { browser } from '$app/environment';
+	import { debounce } from '$lib/helpers/ui';
 	const dispatch = createEventDispatcher();
 
 	const table = createTable(dataTable, {
-		page: addPagination({ initialPageSize: 5 }),
-		sort: addSortBy(),
-		resize: addResizedColumns(),
+		page: addPagination({ initialPageSize: 5, serverSide: true }),
+		sort: addSortBy({ serverSide: true }),
+		filter: addTableFilter({ serverSide: true }),
 		select: addSelectedRows(),
-		filter: addTableFilter()
+		resize: addResizedColumns()
 	});
 
 	const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates, visibleColumns } =
@@ -45,6 +46,9 @@
 	const { pageSize, hasNextPage, hasPreviousPage, pageIndex, pageCount } = pluginStates.page;
 	const { somePageRowsSelected, allPageRowsSelected, allRowsSelected } = pluginStates.select;
 	const { filterValue } = pluginStates.filter;
+	onMount(() => {
+		filterValue.subscribe(debounce((query: string) => dispatch('search', query)));
+	});
 	let pageSizes = [5, 10, 15, 25, 50, 100].map((item) => ({ id: item, value: item }));
 	function columnsGenerator() {
 		const arrColumns = columns.map((col) => {

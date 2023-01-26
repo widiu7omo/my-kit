@@ -23,9 +23,9 @@
 	let loading = false;
 	let busy = false;
 	const dataTable = writable(data.users);
-	const loadData = async () => {
+	const loadData = async (query?: string) => {
 		loading = true;
-		$dataTable = await trpc($page).users.list.query();
+		$dataTable = await trpc($page).users.list.query(query);
 		loading = false;
 	};
 	const columns: ColumnTable<User>[] = [
@@ -125,6 +125,9 @@
 			busy = false;
 		}
 	};
+	const handleSearchData = (e: CustomEvent) => {
+		loadData(e.detail);
+	};
 </script>
 
 <svelte:head>
@@ -145,9 +148,10 @@
 			class="max-w-screen xl:max-w-6xl"
 			{dataTable}
 			{columns}
-			{loading}
+			bind:loading
 			on:delete={handleDelete}
 			on:edit={handleModalEditOpen}
+			on:search={handleSearchData}
 		/>
 	</div>
 	<!-- <div>
