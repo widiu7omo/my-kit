@@ -13,6 +13,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { menu } from '@skeletonlabs/skeleton';
 	export type T = $$Generic;
+	export let componentId: string;
 	export let row: BodyRow<T>;
 	const dispatch = createEventDispatcher();
 	const handleEditButton = () => {
@@ -26,10 +27,12 @@
 </script>
 
 <div class="relative">
-	<button class="btn btn-sm variant-ghost-primary" use:menu={{ menu: 'table-actions-menu' }}
+	<button
+		class="btn btn-sm variant-ghost-primary"
+		use:menu={{ menu: `table-actions-menu-${componentId}` }}
 		><DotVerticalIcon class="w-4 h-4" />
 	</button>
-	<div class="card w-32 p-2" data-menu="table-actions-menu">
+	<div class="card w-32 p-2" data-menu={`table-actions-menu-${componentId}`}>
 		<ul class="p-2 !space-y-0">
 			<li class="!p-0">
 				<button

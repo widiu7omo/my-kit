@@ -7,7 +7,15 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 export const users = t.router({
 	list: t.procedure
 		.use(logger)
-		.input(z.string().optional())
+		.input(
+			z
+				.object({
+					query: z.string().optional(),
+					limit: z.number().optional(),
+					offset: z.number().optional()
+				})
+				.optional()
+		)
 		.query(({ input }) => {
 			return db.user.findMany({
 				select: {
@@ -18,9 +26,11 @@ export const users = t.router({
 				orderBy: {
 					name: 'desc'
 				},
-				where: input
+				take: input?.limit,
+				skip: input?.offset,
+				where: input?.query
 					? {
-							OR: [{ name: { contains: input } }, { email: { contains: input } }]
+							OR: [{ name: { contains: input?.query } }, { email: { contains: input?.query } }]
 					  }
 					: undefined
 			});

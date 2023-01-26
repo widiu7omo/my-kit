@@ -23,9 +23,13 @@
 	let loading = false;
 	let busy = false;
 	const dataTable = writable(data.users);
-	const loadData = async (query?: string) => {
+	const loadData = async (query?: string, limit?: number, offset?: number) => {
 		loading = true;
-		$dataTable = await trpc($page).users.list.query(query);
+		$dataTable = await trpc($page).users.list.query({
+			query,
+			limit,
+			offset
+		});
 		loading = false;
 	};
 	const columns: ColumnTable<User>[] = [
@@ -59,8 +63,7 @@
 					loadData();
 					console.log('AFTER SAVE', e.detail);
 				},
-				fnOnCancel: (e: CustomEvent) => console.log('AFTER CANCEL', e.detail),
-				fnAfterDelete: (e: CustomEvent) => console.log('AFTER DELETE', e.detail)
+				fnOnCancel: (e: CustomEvent) => console.log('AFTER CANCEL', e.detail)
 			}
 		};
 		if (browser) modalStore.trigger(setting);
@@ -78,7 +81,7 @@
 					if (r) console.log('response:', r);
 				},
 				meta: {
-					item: data.users[indexRow],
+					item: $dataTable[indexRow],
 					fnAfterSave: (e: CustomEvent) => {
 						loadData();
 						if (browser) {
@@ -86,8 +89,7 @@
 							modalStore.clear();
 						}
 					},
-					fnOnCancel: (e: CustomEvent) => console.log('AFTER CANCEL', e.detail),
-					fnAfterDelete: (e: CustomEvent) => console.log('AFTER DELETE', e.detail)
+					fnOnCancel: (e: CustomEvent) => console.log('AFTER CANCEL', e.detail)
 				}
 			};
 			if (browser) modalStore.trigger(setting);
@@ -102,7 +104,7 @@
 		try {
 			if (e.detail.id) {
 				const rowIndex = parseInt(e.detail.id);
-				const id = data.users[rowIndex].id;
+				const id = $dataTable[rowIndex].id;
 				await trpc().users.delete.mutate(id);
 				await invalidateAll();
 				toast.success('User Deleted');

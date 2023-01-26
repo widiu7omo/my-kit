@@ -43,7 +43,9 @@
 
 	const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates, visibleColumns } =
 		table.createViewModel(columnsGenerator());
-	const { pageSize, hasNextPage, hasPreviousPage, pageIndex, pageCount } = pluginStates.page;
+	const { pageSize, hasNextPage, hasPreviousPage, pageIndex, pageCount, serverItemCount } =
+		pluginStates.page;
+	$: console.log($serverItemCount);
 	const { somePageRowsSelected, allPageRowsSelected, allRowsSelected } = pluginStates.select;
 	const { filterValue } = pluginStates.filter;
 	onMount(() => {
@@ -91,7 +93,8 @@
 				header: '',
 				cell: ({ row }, { pluginStates: _pluginStates }) => {
 					return createRender(TableActions<T>, {
-						row
+						row,
+						componentId: row.id
 					});
 				},
 				plugins: {
@@ -193,7 +196,12 @@
 								<Subscribe attrs={cell.attrs()} let:attrs>
 									<td {...attrs} class:pl-4={cell.id === 'selected'}>
 										{#if cell.id === 'actions'}
-											<TableActions {row} on:edit={handleEdit} on:delete={confirmDelete} />
+											<TableActions
+												componentId={row.id}
+												{row}
+												on:edit={handleEdit}
+												on:delete={confirmDelete}
+											/>
 										{:else}
 											<p class="line-clamp-2">
 												<Render of={cell.render()} />
@@ -251,7 +259,7 @@
 			</select>
 		</div>
 		<div class="text-sm text-gray-500 text-semibold">
-			{$pageIndex + 1} of {$pageCount} Pages
+			{$pageIndex + 1} of {$serverItemCount} Pages
 		</div>
 		<nav class="isolate inline-flex space-x-2 rounded-md shadow-sm" aria-label="Pagination">
 			<button on:click={() => $pageIndex--} disabled={$hasNextPage} class="btn-icon variant-filled">

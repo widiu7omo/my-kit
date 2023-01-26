@@ -16,21 +16,18 @@
 	let form: HTMLFormElement;
 	let afterSave: () => void;
 	let handleCancel: () => void;
-	let afterDelete: () => void;
 	let busy = false;
-	let columns: string[] = [];
 	$: {
 		$modalStore[0]?.meta;
 		item = $modalStore[0]?.meta['item'];
 		afterSave = $modalStore[0]?.meta['fnAfterSave'];
 		handleCancel = $modalStore[0]?.meta['fnOnCancel'];
-		afterDelete = $modalStore[0]?.meta['fnAfterDelete'];
 	}
 	// Form Data
 	const cleanUp = () => {
 		item = null;
 		errors = null;
- 		form.reset();
+		form.reset();
 	};
 	const handleSave = async (e: CustomEvent) => {
 		// if (!data.isAuthenticated) {
@@ -65,7 +62,6 @@
 	};
 	// Base Classes
 	const cBase = 'space-y-4';
-	const cForm = 'border border-surface-500 p-4 space-y-4 rounded-container-token';
 </script>
 
 <div class={cBase}>
