@@ -1,12 +1,12 @@
-<script>
-
-	import { Avatar, menu } from "@skeletonlabs/skeleton";
-
+<script lang="ts">
+	import { Avatar, LightSwitch, menu } from '@skeletonlabs/skeleton';
+	import { storeLightSwitch } from '@skeletonlabs/skeleton';
 </script>
+
 <div class="relative">
 	<button class="btn btn-sm p-0" use:menu={{ menu: 'profile-menu', interactive: true }}>
 		<div class="relative inline-block">
-			<span class="badge badge-filled-primary absolute -top-3 -right-4 z-10">50k</span>
+			<span class="badge variant-filled-primary absolute -top-3 -right-4 z-10">50k</span>
 			<Avatar
 				src="https://i.pravatar.cc/"
 				width="w-10"
@@ -21,10 +21,14 @@
 			<li><a class="!px-4 !py-2 text-sm" href="/">Blog</a></li>
 			<li><a class="!px-4 !py-2 text-sm" href="/">About</a></li>
 			<li>
-				<button class="w-full btn btn-sm btn-filled-primary"
-					><span class="!text-center text-sm">Logout</span></button
-				>
+				<div class="!px-4 !py-2 flex justify-between">
+					<p class="!text-sm">Theme : {$storeLightSwitch ? 'Dark' : 'Light'}</p>
+					<LightSwitch />
+				</div>
 			</li>
 		</ul>
+		<button class="w-full btn btn-sm variant-filled-primary mt-5">
+			<span class="!text-center text-sm">Logout</span>
+		</button>
 	</div>
 </div>

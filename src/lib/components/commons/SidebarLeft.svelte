@@ -9,7 +9,10 @@
 	$: classesActive = (href: string) => (href === $page.url.pathname ? '!bg-primary-500' : '');
 </script>
 
-<div id="sidebar-left" class="hidden lg:block bg-surface-500/5 w-56 p-4 h-full">
+<div
+	id="sidebar-left"
+	class="hidden lg:block bg-surface-500/5 w-64 p-4 h-full border-r border-surface-200-700-token"
+>
 	<AppBrand />
 	<nav class="list-nav">
 		<ul>

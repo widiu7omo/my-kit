@@ -1,8 +1,183 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+	import { trpc } from '$lib/trpc/client';
+	import type { User } from '@prisma/client';
+	// import TextInput from '$lib/components/commons/inputs/TextInput.svelte';
+	// import Modal from '$lib/components/commons/Modal.svelte';
 	import AdminLayout from '$lib/layouts/AdminLayout.svelte';
+	// import Fieldset from '$lib/components/commons/Fieldset.svelte';
+	import type { RouterInputs, RouterOutputs } from '$lib/trpc/router';
+	import { savable } from '$lib/saveable';
+	import { invalidateAll } from '$app/navigation';
+	import { TRPCClientError } from '@trpc/client';
+	// import Form from '$lib/components/commons/Form.svelte';
+	import toast from 'svelte-french-toast';
+	import { getInvocationMessage, isJson } from '$lib/helpers/data';
+	import { writable } from 'svelte/store';
+	import Table, { type ColumnTable } from '$lib/components/commons/table/Table.svelte';
+	import type { CustomEventProps } from '$lib/components/commons/table/TableActions.svelte';
+	import { modalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
+	import { browser } from '$app/environment';
+	import ModalUser from '$lib/modules/users/ModalUser.svelte';
+	export let data: { users: RouterOutputs['users']['list'] };
+	let loading = false;
+	let busy = false;
+	const dataTable = writable(data.users);
+	const loadData = async () => {
+		loading = true;
+		$dataTable = await trpc($page).users.list.query();
+		loading = false;
+	};
+	const columns: ColumnTable<User>[] = [
+		{
+			header: 'ID',
+			accessor: 'id',
+			sortable: false,
+			width: 100,
+			filterable: false
+		},
+		{ header: 'Name', accessor: 'name', width: 300 },
+		{ header: 'E-mail', accessor: 'email' }
+	];
+
+	const handleModalAddOpen = () => {
+		const component: ModalComponent = { ref: ModalUser };
+		const setting: ModalSettings = {
+			type: 'component',
+			title: 'Create new user',
+			component,
+			response(r: boolean) {
+				if (r) console.log('response:', r);
+			},
+			meta: {
+				item: {
+					id: null,
+					name: '',
+					email: ''
+				},
+				fnAfterSave: (e: CustomEvent) => {
+					loadData();
+					console.log('AFTER SAVE', e.detail);
+				},
+				fnOnCancel: (e: CustomEvent) => console.log('AFTER CANCEL', e.detail),
+				fnAfterDelete: (e: CustomEvent) => console.log('AFTER DELETE', e.detail)
+			}
+		};
+		if (browser) modalStore.trigger(setting);
+	};
+	const handleModalEditOpen = async (e: CustomEvent<CustomEventProps>) => {
+		if (e.detail.id) {
+			const indexRow = parseInt(e.detail.id);
+			const component: ModalComponent = { ref: ModalUser };
+			const setting: ModalSettings = {
+				type: 'component',
+				title: 'Edit User',
+				body: 'Edit user data below',
+				component,
+				response(r: boolean) {
+					if (r) console.log('response:', r);
+				},
+				meta: {
+					item: data.users[indexRow],
+					fnAfterSave: (e: CustomEvent) => {
+						loadData();
+						if (browser) {
+							modalStore.close();
+							modalStore.clear();
+						}
+					},
+					fnOnCancel: (e: CustomEvent) => console.log('AFTER CANCEL', e.detail),
+					fnAfterDelete: (e: CustomEvent) => console.log('AFTER DELETE', e.detail)
+				}
+			};
+			if (browser) modalStore.trigger(setting);
+		} else {
+			toast.error('User not found');
+		}
+	};
+	let item: RouterInputs['users']['save'] | null = null;
+	let errors: { message: string; path: string[] }[] | null = null;
+	const handleDelete = async (e: CustomEvent<CustomEventProps>) => {
+		busy = true;
+		try {
+			if (e.detail.id) {
+				const rowIndex = parseInt(e.detail.id);
+				const id = data.users[rowIndex].id;
+				await trpc().users.delete.mutate(id);
+				await invalidateAll();
+				toast.success('User Deleted');
+				// cleanUp();
+				loadData();
+			} else {
+				toast.error('User not found');
+			}
+		} catch (err) {
+			if (err instanceof TRPCClientError) {
+				if (isJson(err.message)) {
+					errors = JSON.parse(err.message);
+				} else {
+					toast.error(getInvocationMessage(err.message));
+				}
+			} else {
+				throw err;
+			}
+		} finally {
+			busy = false;
+		}
+	};
 </script>
 
 <svelte:head>
 	<title>Users</title>
 </svelte:head>
-<AdminLayout>User page</AdminLayout>
+<AdminLayout>
+	<div class="px-2 xl:px-16">
+		<div class="flex justify-between py-8 items-center">
+			<div>
+				<h4 class="text-2xl font-bold">Users</h4>
+				<h6 class="text-stone-500 font-light text-sm">Management users</h6>
+			</div>
+			<button class="btn variant-filled-primary btn-sm" on:click={handleModalAddOpen}
+				>New User</button
+			>
+		</div>
+		<Table
+			class="max-w-screen xl:max-w-6xl"
+			{dataTable}
+			{columns}
+			{loading}
+			on:delete={handleDelete}
+			on:edit={handleModalEditOpen}
+		/>
+	</div>
+	<!-- <div>
+		<Modal id="form-modal" open={modalUserOpen}>
+			<div slot="modal-title" class="flex justify-between">
+				<div>User Data</div>
+				<button on:click={cleanUp}>
+					<CloseIcon />
+				</button>
+			</div>
+			<div slot="modal-body" class="w-full">
+				<Form on:save={handleSave} on:cancel={cleanUp} bind:form>
+					<div slot="input">
+						<Fieldset name="Basic Information">
+							<input type="hidden" name="id" value={item?.id ?? null} />
+							<TextInput name="name" label="Name" required {errors} {item} />
+							<TextInput name="email" label="E-mail" required {errors} {item} />
+						</Fieldset>
+					</div>
+					<div slot="action" class="flex items-end justify-end">
+						<button type="submit" class:loading={busy} class="btn btn-primary btn-sm">Save</button>
+					</div>
+				</Form>
+			</div>
+		</Modal>
+		<ModalDeleteConfirmation
+			on:confirm={handleDelete}
+			on:cancel={cleanUp}
+			isModalOpen={modalConfirm}
+			id={item?.id ?? null}
+		/>
+	</div> -->
+</AdminLayout>

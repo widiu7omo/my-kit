@@ -13,7 +13,7 @@
 	});
 </script>
 
-<div class="bg-surface-100-800-token border-t border-surface-400-500-token shadow">
+<div class="bg-surface-100-800-token border-y border-surface-200-700-token shadow">
 	<ol class="breadcrumb px-4 py-1">
 		{#each routeNames as routeName, index (routeName)}
 			{#if routeName !== ''}

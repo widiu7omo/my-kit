@@ -2,9 +2,10 @@
 	import { storeSidebarOpen } from '$lib/stores/commons/ui';
 	import { AppBar, Avatar } from '@skeletonlabs/skeleton';
 	import MenuBarIcon from '../icons/MenuBarIcon.svelte';
+	import { browser } from '$app/environment';
 	import BellIcon from '$lib/components/icons/BellIcon.svelte';
 	const handleSidebarToggle = () => {
-		storeSidebarOpen.set(!$storeSidebarOpen);
+		if (browser) storeSidebarOpen.set(!$storeSidebarOpen);
 	};
 	import PanelNotifications from './PanelNotifications.svelte';
 	import PanelProfile from './PanelProfile.svelte';
@@ -17,7 +18,7 @@
 			<MenuBarIcon />
 		</button>
 	</svelte:fragment>
-	<span class="block border-l border-surface-400-500-token h-16" />
+	<span class="block border-l border-surface-200-700-token h-16" />
 	<svelte:fragment slot="trail">
 		<PanelNotifications />
 		<PanelProfile />

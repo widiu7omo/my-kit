@@ -1,36 +1,51 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@playwright/test': ^1.28.1
-  '@skeletonlabs/skeleton': ^0.92.2
-  '@sveltejs/adapter-auto': ^1.0.0
-  '@sveltejs/kit': ^1.0.0
+  '@playwright/test': ^1.30.0
+  '@prisma/client': ^4.9.0
+  '@skeletonlabs/skeleton': ^0.99.5
+  '@sveltejs/adapter-auto': ^1.0.2
+  '@sveltejs/kit': ^1.2.9
   '@tailwindcss/forms': ^0.5.3
   '@tailwindcss/line-clamp': ^0.4.2
   '@tailwindcss/typography': ^0.5.9
-  '@typescript-eslint/eslint-plugin': ^5.45.0
-  '@typescript-eslint/parser': ^5.45.0
+  '@trpc/client': ^10.9.0
+  '@trpc/server': ^10.9.0
+  '@typescript-eslint/eslint-plugin': ^5.49.0
+  '@typescript-eslint/parser': ^5.49.0
   autoprefixer: ^10.4.13
-  eslint: ^8.28.0
-  eslint-config-prettier: ^8.5.0
+  eslint: ^8.32.0
+  eslint-config-prettier: ^8.6.0
   eslint-plugin-svelte3: ^4.0.0
   postcss: ^8.4.21
-  prettier: ^2.8.0
-  prettier-plugin-svelte: ^2.8.1
-  svelte: ^3.54.0
-  svelte-check: ^3.0.1
+  prettier: ^2.8.3
+  prettier-plugin-svelte: ^2.9.0
+  prisma: ^4.9.0
+  svelte: ^3.55.1
+  svelte-check: ^3.0.3
+  svelte-french-toast: ^1.0.3
+  svelte-headless-table: ^0.17.2
   svelte-preprocess: ^5.0.1
   tailwindcss: ^3.2.4
+  trpc-sveltekit: ^3.2.4
   tslib: ^2.4.1
-  typescript: ^4.9.3
-  vite: ^4.0.0
-  vitest: ^0.25.3
+  typescript: ^4.9.4
+  vite: ^4.0.4
+  vitest: ^0.25.8
+  zod: ^3.20.2
+
+dependencies:
+  '@prisma/client': 4.9.0_prisma@4.9.0
+  '@trpc/client': 10.9.0_@trpc+server@10.9.0
+  '@trpc/server': 10.9.0
+  trpc-sveltekit: 3.2.4
+  zod: 3.20.2
 
 devDependencies:
-  '@playwright/test': 1.29.2
-  '@skeletonlabs/skeleton': 0.92.2
-  '@sveltejs/adapter-auto': 1.0.2_@sveltejs+kit@1.2.6
-  '@sveltejs/kit': 1.2.6_svelte@3.55.1+vite@4.0.4
+  '@playwright/test': 1.30.0
+  '@skeletonlabs/skeleton': 0.99.5
+  '@sveltejs/adapter-auto': 1.0.2_@sveltejs+kit@1.2.9
+  '@sveltejs/kit': 1.2.9_svelte@3.55.1+vite@4.0.4
   '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.4
   '@tailwindcss/line-clamp': 0.4.2_tailwindcss@3.2.4
   '@tailwindcss/typography': 0.5.9_tailwindcss@3.2.4
@@ -43,8 +58,11 @@ devDependencies:
   postcss: 8.4.21
   prettier: 2.8.3
   prettier-plugin-svelte: 2.9.0_kdmmghgdi3ngrsq6otxkjilbry
+  prisma: 4.9.0
   svelte: 3.55.1
-  svelte-check: 3.0.2_pehl75e5jsy22vp33udjja4soi
+  svelte-check: 3.0.3_pehl75e5jsy22vp33udjja4soi
+  svelte-french-toast: 1.0.3_svelte@3.55.1
+  svelte-headless-table: 0.17.2_svelte@3.55.1
   svelte-preprocess: 5.0.1_oifjsu5oar4lzyaoppb2hxramu
   tailwindcss: 3.2.4_postcss@8.4.21
   tslib: 2.4.1
@@ -326,34 +344,56 @@ packages:
       fastq: 1.15.0
     dev: true
 
-  /@playwright/test/1.29.2:
-    resolution: {integrity: sha512-+3/GPwOgcoF0xLz/opTnahel1/y42PdcgZ4hs+BZGIUjtmEFSXGg+nFoaH3NSmuc7a6GSFwXDJ5L7VXpqzigNg==}
+  /@playwright/test/1.30.0:
+    resolution: {integrity: sha512-SVxkQw1xvn/Wk/EvBnqWIq6NLo1AppwbYOjNLmyU0R1RoQ3rLEBtmjTnElcnz8VEtn11fptj1ECxK0tgURhajw==}
     engines: {node: '>=14'}
     hasBin: true
     dependencies:
       '@types/node': 18.11.18
-      playwright-core: 1.29.2
+      playwright-core: 1.30.0
     dev: true
 
   /@polka/url/1.0.0-next.21:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
     dev: true
 
-  /@skeletonlabs/skeleton/0.92.2:
-    resolution: {integrity: sha512-z4jIXYirk2W64pLCwqakBTL0yS+of7ffbbM8Cm8JIywW5PlTddBRFJOlZYZn5FjG/Cfew5BZKndehRff1cSznw==}
+  /@prisma/client/4.9.0_prisma@4.9.0:
+    resolution: {integrity: sha512-bz6QARw54sWcbyR1lLnF2QHvRW5R/Jxnbbmwh3u+969vUKXtBkXgSgjDA85nji31ZBlf7+FrHDy5x+5ydGyQDg==}
+    engines: {node: '>=14.17'}
+    requiresBuild: true
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+    dependencies:
+      '@prisma/engines-version': 4.9.0-42.ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5
+      prisma: 4.9.0
+    dev: false
+
+  /@prisma/engines-version/4.9.0-42.ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5:
+    resolution: {integrity: sha512-M16aibbxi/FhW7z1sJCX8u+0DriyQYY5AyeTH7plQm9MLnURoiyn3CZBqAyIoQ+Z1pS77usCIibYJWSgleBMBA==}
+    dev: false
+
+  /@prisma/engines/4.9.0:
+    resolution: {integrity: sha512-t1pt0Gsp+HcgPJrHFc+d/ZSAaKKWar2G/iakrE07yeKPNavDP3iVKPpfXP22OTCHZUWf7OelwKJxQgKAm5hkgw==}
+    requiresBuild: true
+
+  /@skeletonlabs/skeleton/0.99.5:
+    resolution: {integrity: sha512-P3YvmAItNk/IzT6ma9q1D3T8leiit+T4BgpVynWuKOZg9FVWakB1M88ncuuEOkk+nAH/cGtjIEtougGB9+ynNw==}
     dev: true
 
-  /@sveltejs/adapter-auto/1.0.2_@sveltejs+kit@1.2.6:
+  /@sveltejs/adapter-auto/1.0.2_@sveltejs+kit@1.2.9:
     resolution: {integrity: sha512-UXpEO/gutERZnD+Z5Vi4J/ifD3WSRuCI7xwtLJTcKNQvJ6t5Xsj1X3Mw2F8Vv/XTUuxf7xPLYUgThU331r0Y9w==}
     peerDependencies:
       '@sveltejs/kit': ^1.0.0
     dependencies:
-      '@sveltejs/kit': 1.2.6_svelte@3.55.1+vite@4.0.4
+      '@sveltejs/kit': 1.2.9_svelte@3.55.1+vite@4.0.4
       import-meta-resolve: 2.2.1
     dev: true
 
-  /@sveltejs/kit/1.2.6_svelte@3.55.1+vite@4.0.4:
-    resolution: {integrity: sha512-dESK7mYjIm9yQWA7esAbHg7MoWOpB8Ztgzmc7LAvrGlsg2bs1+NPhSPaMKs7CQFznkunzrlE4Q4irMPiXJQmIw==}
+  /@sveltejs/kit/1.2.9_svelte@3.55.1+vite@4.0.4:
+    resolution: {integrity: sha512-zHuYwMgCJpmgYoQ1EOIgNFNkBTKqErHH+fqZVfNmEw2hICoKZHIjqm8/fetRUtF71dqXq0TmPS/HuCCBHXQiZw==}
     engines: {node: ^16.14 || >=18}
     hasBin: true
     requiresBuild: true
@@ -427,6 +467,18 @@ packages:
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.2.4_postcss@8.4.21
     dev: true
+
+  /@trpc/client/10.9.0_@trpc+server@10.9.0:
+    resolution: {integrity: sha512-id6318qpgqllNOuBp7nuciXFPXCe+zae5d4r1hze6Eyp5fFFNO58TqA+4Q44KIcHgpfWyW2egs6iPeql3PrdKA==}
+    peerDependencies:
+      '@trpc/server': 10.9.0
+    dependencies:
+      '@trpc/server': 10.9.0
+    dev: false
+
+  /@trpc/server/10.9.0:
+    resolution: {integrity: sha512-5psyZgbvy29pJND32hwkWTMbv6s86IbsPOeDopsgNF0VegZT6Dsijmb7Ub/TDhuJVQVq5u4u5briMXi3SxmBkw==}
+    dev: false
 
   /@types/chai-subset/1.3.3:
     resolution: {integrity: sha512-frBecisrNGz+F4T6bcc+NLeolfiojh5FxW2klu669+8BARtyQv2C/GkNW6FUodVe4BroGMP/wER/YDGc7rEllw==}
@@ -1579,8 +1631,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /playwright-core/1.29.2:
-    resolution: {integrity: sha512-94QXm4PMgFoHAhlCuoWyaBYKb92yOcGVHdQLoxQ7Wjlc7Flg4aC/jbFW7xMR52OfXMVkWicue4WXE7QEegbIRA==}
+  /playwright-core/1.30.0:
+    resolution: {integrity: sha512-7AnRmTCf+GVYhHbLJsGUtskWTE33SwMZkybJ0v6rqR1boxq2x36U7p1vDRV7HO2IwTZgmycracLxPEJI49wu4g==}
     engines: {node: '>=14'}
     hasBin: true
     dev: true
@@ -1683,6 +1735,14 @@ packages:
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
+
+  /prisma/4.9.0:
+    resolution: {integrity: sha512-bS96oZ5oDFXYgoF2l7PJ3Mp1wWWfLOo8B/jAfbA2Pn0Wm5Z/owBHzaMQKS3i1CzVBDWWPVnOohmbJmjvkcHS5w==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      '@prisma/engines': 4.9.0
 
   /punycode/2.3.0:
     resolution: {integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==}
@@ -1879,8 +1939,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /svelte-check/3.0.2_pehl75e5jsy22vp33udjja4soi:
-    resolution: {integrity: sha512-DkhKhV0Jt0gh7q9DBB26+J2Vfb9y4/4JWxnbkXBZha7542LOhwvj3edJFjyJ+xjdaXyInZ+YRRYc3V6wytP2ew==}
+  /svelte-check/3.0.3_pehl75e5jsy22vp33udjja4soi:
+    resolution: {integrity: sha512-ByBFXo3bfHRGIsYEasHkdMhLkNleVfszX/Ns1oip58tPJlKdo5Ssr8kgVIuo5oq00hss8AIcdesuy0Xt0BcTvg==}
     hasBin: true
     peerDependencies:
       svelte: ^3.55.0
@@ -1906,11 +1966,37 @@ packages:
       - sugarss
     dev: true
 
+  /svelte-french-toast/1.0.3_svelte@3.55.1:
+    resolution: {integrity: sha512-HBdutlqUx5FroucvcmMJstmTJDedXayiOSXubBYW6iL5x1PdHp+bOflGx5NxsOa6+EQckJnnVv1vJYgGsg7ngQ==}
+    dependencies:
+      svelte-writable-derived: 2.1.6_svelte@3.55.1
+    transitivePeerDependencies:
+      - svelte
+    dev: true
+
+  /svelte-headless-table/0.17.2_svelte@3.55.1:
+    resolution: {integrity: sha512-XYG3PC6HzotIhzeqb+M+HGwtkfIhuRJr2+BgRYYD4xTANEUtlWg6M8tIgQp7fqJf7VKOdhmXQbyvjWKE/VGG3w==}
+    dependencies:
+      svelte-keyed: 1.1.6_svelte@3.55.1
+      svelte-render: 1.6.0
+      svelte-subscribe: 1.0.5
+    transitivePeerDependencies:
+      - svelte
+    dev: true
+
   /svelte-hmr/0.15.1_svelte@3.55.1:
     resolution: {integrity: sha512-BiKB4RZ8YSwRKCNVdNxK/GfY+r4Kjgp9jCLEy0DuqAKfmQtpL38cQK3afdpjw4sqSs4PLi3jIPJIFp259NkZtA==}
     engines: {node: ^12.20 || ^14.13.1 || >= 16}
     peerDependencies:
       svelte: '>=3.19.0'
+    dependencies:
+      svelte: 3.55.1
+    dev: true
+
+  /svelte-keyed/1.1.6_svelte@3.55.1:
+    resolution: {integrity: sha512-sd/7j3waSpOkeiQqATstlvNySbEpSs49aoaZ/nc09x/iEndnXQ/9Zy5PTD06+C7hlZk8KjZ4bhrktAQ791jWMQ==}
+    peerDependencies:
+      svelte: ^3.49.0
     dependencies:
       svelte: 3.55.1
     dev: true
@@ -1962,6 +2048,24 @@ packages:
       strip-indent: 3.0.0
       svelte: 3.55.1
       typescript: 4.9.4
+    dev: true
+
+  /svelte-render/1.6.0:
+    resolution: {integrity: sha512-Y6Ea6U768MuhH0xR72pAPnXdSnJ+4yi24YyD/b9Q46yGalQFVxUyan496EELWtQEvgQE9Z2PsFAG8JjvrWcDAg==}
+    dependencies:
+      svelte-subscribe: 1.0.5
+    dev: true
+
+  /svelte-subscribe/1.0.5:
+    resolution: {integrity: sha512-p+vRSBVzR9BQC72mjd2eqCv8zx5euLZQJF7QqAw5d41aKzQVOq90y71/NXch+nDNMjWbRo0CX+brcWYgPryJlw==}
+    dev: true
+
+  /svelte-writable-derived/2.1.6_svelte@3.55.1:
+    resolution: {integrity: sha512-vqOXuiESMZyP/kt/RD+nOk2RVHNakDm1K1hmfeGAKc4jzcSp5hEkUi43MDbkVlMurkSBlcMVTQwRQy4LcBT2lw==}
+    peerDependencies:
+      svelte: ^3.2.1
+    dependencies:
+      svelte: 3.55.1
     dev: true
 
   /svelte/3.55.1:
@@ -2039,6 +2143,13 @@ packages:
     resolution: {integrity: sha512-eM+pCBxXO/njtF7vdFsHuqb+ElbxqtI4r5EAvk6grfAFyJ6IvWlSkfZ5T9ozC6xWw3Fj1fGoSmrl0gUs46JVIw==}
     engines: {node: '>=6'}
     dev: true
+
+  /trpc-sveltekit/3.2.4:
+    resolution: {integrity: sha512-m7nU+pEfJNna/++yc6kuwe2GUbgRAuxl8PY8jTV9zKKbWhgOfpvjhRP0QgbbhnBXN9rKkQhTJZBDrBwZSszjqQ==}
+    dependencies:
+      '@trpc/client': 10.9.0_@trpc+server@10.9.0
+      '@trpc/server': 10.9.0
+    dev: false
 
   /tslib/1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
@@ -2267,3 +2378,7 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zod/3.20.2:
+    resolution: {integrity: sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==}
+    dev: false
