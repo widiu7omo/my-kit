@@ -106,7 +106,7 @@
 	}
 	const arrSubs = initSubscription();
 	onDestroy(() => {
-		console.log('DESTROY SESSION');
+		console.log('DESTROY TABLE');
 		for (var i = 0; i < arrSubs.length; i++) {
 			arrSubs[i]();
 		}
