@@ -2,14 +2,10 @@
 	import { page } from '$app/stores';
 	import { trpc } from '$lib/trpc/client';
 	import type { User } from '@prisma/client';
-	// import TextInput from '$lib/components/commons/inputs/TextInput.svelte';
-	// import Modal from '$lib/components/commons/Modal.svelte';
 	import AdminLayout from '$lib/layouts/AdminLayout.svelte';
-	// import Fieldset from '$lib/components/commons/Fieldset.svelte';
 	import type { RouterInputs, RouterOutputs } from '$lib/trpc/router';
 	import { invalidateAll } from '$app/navigation';
 	import { TRPCClientError } from '@trpc/client';
-	// import Form from '$lib/components/commons/Form.svelte';
 	import toast from 'svelte-french-toast';
 	import { getInvocationMessage, isJson } from '$lib/helpers/data';
 	import { writable, type Writable } from 'svelte/store';
@@ -40,7 +36,6 @@
 		count = await trpc($page).users.count.query({
 			query: params.query
 		});
-		console.log(count);
 		loading = false;
 	};
 	const columns: ColumnTable<User>[] = [
@@ -58,6 +53,7 @@
 	const handleModalAddOpen = () => {
 		const component: ModalComponent = { ref: ModalUser };
 		const setting: ModalSettings = {
+			modalClasses: '!max-w-[500px]',
 			type: 'component',
 			title: 'Create new user',
 			component,
@@ -143,12 +139,6 @@
 		}
 	};
 	const handleLoadData = (e: CustomEvent<ParamsQuery>) => {
-		// $page.url.searchParams.set('query', String(e.detail?.query));
-		// $page.url.searchParams.set('offset', String(e.detail?.offset));
-		// $page.url.searchParams.set('limit', String(e.detail?.limit));
-		// if (browser) {
-		// 	window.history.replaceState(history.state, '', $page.url);
-		// }
 		loadData();
 	};
 </script>
@@ -179,34 +169,4 @@
 			on:load={handleLoadData}
 		/>
 	</div>
-	<!-- <div>
-		<Modal id="form-modal" open={modalUserOpen}>
-			<div slot="modal-title" class="flex justify-between">
-				<div>User Data</div>
-				<button on:click={cleanUp}>
-					<CloseIcon />
-				</button>
-			</div>
-			<div slot="modal-body" class="w-full">
-				<Form on:save={handleSave} on:cancel={cleanUp} bind:form>
-					<div slot="input">
-						<Fieldset name="Basic Information">
-							<input type="hidden" name="id" value={item?.id ?? null} />
-							<TextInput name="name" label="Name" required {errors} {item} />
-							<TextInput name="email" label="E-mail" required {errors} {item} />
-						</Fieldset>
-					</div>
-					<div slot="action" class="flex items-end justify-end">
-						<button type="submit" class:loading={busy} class="btn btn-primary btn-sm">Save</button>
-					</div>
-				</Form>
-			</div>
-		</Modal>
-		<ModalDeleteConfirmation
-			on:confirm={handleDelete}
-			on:cancel={cleanUp}
-			isModalOpen={modalConfirm}
-			id={item?.id ?? null}
-		/>
-	</div> -->
 </AdminLayout>

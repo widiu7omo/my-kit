@@ -61,7 +61,7 @@
 		}
 	};
 	// Base Classes
-	const cBase = 'space-y-4';
+	const cBase = 'space-y-4 p-4';
 </script>
 
 <div class={cBase}>

@@ -107,8 +107,8 @@
 	const arrSubs = initSubscription();
 	onDestroy(() => {
 		console.log('DESTROY SESSION');
-		for(var i = 0;i < arrSubs.length;i++){
-			arrSubs[i]()
+		for (var i = 0; i < arrSubs.length; i++) {
+			arrSubs[i]();
 		}
 	});
 	function columnsGenerator() {
@@ -194,10 +194,10 @@
 		class:bg-primary={$somePageRowsSelected}
 	>
 		{#if $somePageRowsSelected}
-			<div>
+			<div class="px-4">
 				<label class="label cursor-pointer">
-					<span class="label-text mr-4 text-xs font-semibold text-white">Select All</span>
-					<input type="checkbox" class="toggle toggle-xs" bind:checked={$allRowsSelected} />
+					<input type="checkbox" class="toggle toggle-xs mr-2" bind:checked={$allRowsSelected} />
+					<span class="label-text  text-sm font-semibold ">Select All</span>
 				</label>
 			</div>
 		{/if}
@@ -210,7 +210,7 @@
 			</div>
 		</div>
 	</div>
-	<table class="w-full table table-hover table-cell-fit " {...$tableAttrs}>
+	<table class="w-full table table-interactive table-cell-fit " {...$tableAttrs}>
 		<!-- head -->
 		<thead>
 			{#each $headerRows as headerRow (headerRow.id)}
