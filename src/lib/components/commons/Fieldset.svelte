@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let name: string;
-	export let labelBg: string = 'bg-surface-100-800-token';
+	export let labelBg: string = 'bg-surface-50-900-token';
 </script>
 
 <div class="p-4 border border-surface-300-600-token space-y-4 rounded-lg relative">

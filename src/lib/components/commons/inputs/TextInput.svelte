@@ -6,8 +6,7 @@
 </script>
 
 <script lang="ts">
-	import { classNames } from "$lib/helpers/ui";
-
+	import { classNames } from '$lib/helpers/ui';
 
 	export let debug: boolean = false;
 	export let name: string;
@@ -20,6 +19,8 @@
 	export let size = '';
 	export let color = '';
 	export let variant = '';
+	export let errors: ErrorInput[] | null = null;
+
 	const getVariant = () => {
 		switch (variant) {
 			case 'bordered':
@@ -65,7 +66,6 @@
 		}
 	};
 
-	export let errors: ErrorInput[] | null = null;
 	let type = price ? 'number' : 'text';
 	$: errorInput = errors?.find((e) => e.path.includes(name));
 	function onFocus(name: string) {
@@ -80,21 +80,21 @@
 			item[name] = val;
 		}
 	};
+	const cLabelInputError = 'text-error-500-400-token';
+	const cInputError =
+		'!border !border-error-300-600-token focus:!border-error-400-500-token !bg-error-50/20 dark:!bg-error-900/20 placeholder-error-500';
 	$: {
 		debug && console.log(item);
 	}
 </script>
 
 <div class="form-control w-full">
-	<label class="label" for={name}>
-		<span class="label-text text-sm text-gray-600"
-			>{label}
-			{#if required}
-				<span class="text-red-500">*</span>
-			{/if}
-		</span>
-		<!--    <span class="label-text-alt">Alt label</span>-->
-	</label>
+	<label for={name} class="block mb-2 text-sm font-medium {errorInput && cLabelInputError}"
+		>{label}
+		{#if required}
+			<span class="text-red-500">*</span>
+		{/if}</label
+	>
 	<input
 		id={name}
 		{name}
@@ -103,20 +103,14 @@
 		value={item?.[name] ?? ''}
 		on:focus={() => onFocus(name)}
 		on:input={handleInput}
-		class={classNames(
-			'input w-full',
-			errorInput ? 'input-error' : '',
-			getVariant(),
-			getColor(),
-			getSize()
-		)}
 		aria-invalid={errorInput ? 'true' : undefined}
+		class="{errorInput && cInputError} text-sm rounded-lg block w-full p-2.5"
 	/>
-	<label class="label" for={name}>
+	<p class="mt-2 text-xs">
 		{#if errorInput}
-			<span class="label-text-alt text-error">{errorInput.message}</span>
+			<span class="text-xs font-medium {cLabelInputError}">{errorInput.message}</span>
+		{:else}
+			<span class="text-xs text-surface-400-500-token">{helpText}</span>
 		{/if}
-		<span class="label-text-alt">{helpText}</span>
-		<!--    <span class="label-text-alt">Alt label</span>-->
-	</label>
+	</p>
 </div>

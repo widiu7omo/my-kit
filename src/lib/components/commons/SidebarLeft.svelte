@@ -1,11 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import AppBrand from './AppBrand.svelte';
-	import HomeIcon from '../icons/HomeIcon.svelte';
-	import UserIcon from '../icons/UserIcon.svelte';
-	import SearchIcon from '$lib/components/icons/SearchIcon.svelte';
-	import CreditCardIcon from '$lib/components/icons/CreditCardIcon.svelte';
 	import { classNames } from '$lib/helpers/ui';
+	import { sidebarMenu } from '$lib/navigations/sidebarMenu';
 	$: classesActive = (href: string) => (href === $page.url.pathname ? '!bg-primary-500' : '');
 </script>
 
@@ -16,34 +13,15 @@
 	<AppBrand />
 	<nav class="list-nav">
 		<ul>
-			<li>
-				<a href="/" class={classNames(classesActive('/'), '!py-1')}
-					><span class="badge"><HomeIcon /></span><span class="flex-auto text-sm font-medium"
-						>Dashboard</span
-					></a
-				>
-			</li>
-			<li>
-				<a href="/users" class={classNames(classesActive('/users'), '!py-1')}
-					><span class="badge"><UserIcon /></span><span class="flex-auto text-sm font-medium"
-						>Users</span
-					></a
-				>
-			</li>
-			<li>
-				<a href="/subscriptions" class={classNames(classesActive('/subscriptions'), '!py-1')}
-					><span class="badge"><CreditCardIcon /></span><span class="flex-auto text-sm font-medium"
-						>Subscriptions</span
-					></a
-				>
-			</li>
-			<li>
-				<a href="/settings" class={classNames(classesActive('/settings'), '!py-1')}
-					><span class="badge"><SearchIcon /></span><span class="flex-auto text-sm font-medium"
-						>Settings</span
-					></a
-				>
-			</li>
+			{#each sidebarMenu as sidebarItem (sidebarItem.name)}
+				<li>
+					<a href={sidebarItem.href} class={classNames(classesActive(sidebarItem.href), '!py-1')}
+						><span class="badge"><svelte:component this={sidebarItem.icon} /></span><span
+							class="flex-auto text-sm font-medium">{sidebarItem.name}</span
+						></a
+					>
+				</li>
+			{/each}
 		</ul>
 	</nav>
 </div>
