@@ -3,10 +3,12 @@ import { t } from '../t';
 import { z } from 'zod';
 import db from '$lib/prisma';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { authTrpc } from '../middlewares/auth';
 
 export const users = t.router({
 	list: t.procedure
 		.use(logger)
+		// .use(authTrpc)
 		.input(
 			z
 				.object({
@@ -59,6 +61,7 @@ export const users = t.router({
 		.input(
 			z.object({
 				id: z.string().nullable(),
+				provider_id: z.string(),
 				name: z.string().min(3).max(50).nullable(),
 				email: z.string().email()
 			})
