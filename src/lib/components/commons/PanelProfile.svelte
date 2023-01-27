@@ -6,7 +6,8 @@
 <div class="relative">
 	<button class="btn btn-sm p-0" use:menu={{ menu: 'profile-menu', interactive: true }}>
 		<div class="relative inline-block">
-			<span class="badge variant-filled-primary absolute -top-3 -right-4 z-10">50k</span>
+			<span class="badge p-1 variant-filled-primary absolute -top-2 -right-4 z-10 text-xs">50k</span
+			>
 			<Avatar
 				src="https://i.pravatar.cc/"
 				width="w-10"

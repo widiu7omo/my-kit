@@ -3,7 +3,6 @@
 	import { AppBar, Avatar } from '@skeletonlabs/skeleton';
 	import MenuBarIcon from '../icons/MenuBarIcon.svelte';
 	import { browser } from '$app/environment';
-	import BellIcon from '$lib/components/icons/BellIcon.svelte';
 	const handleSidebarToggle = () => {
 		if (browser) storeSidebarOpen.set(!$storeSidebarOpen);
 	};
