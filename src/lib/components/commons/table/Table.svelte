@@ -18,7 +18,9 @@
 	export type T = $$Generic;
 	export let columns: ColumnTable<T>[];
 	export let dataTable: Writable<T[]>;
+	export let count: number;
 	export let loading: boolean;
+	export let params: ParamsQuery;
 	import { createTable, Subscribe, Render, createRender } from 'svelte-headless-table';
 	import {
 		addPagination,
@@ -36,8 +38,14 @@
 	import { type ModalSettings, modalStore } from '@skeletonlabs/skeleton';
 	import { browser } from '$app/environment';
 	import { debounce } from '$lib/helpers/ui';
+	import { TABLE_ROWS_PER_PAGE } from '$lib/constants/constant';
+	import { onDestroy } from 'svelte';
 	const dispatch = createEventDispatcher();
-	let pageSizes = [5, 10, 15, 25, 50, 100].map((item) => ({ id: item, value: item }));
+	let noPagination = false;
+	let pageSizes = [TABLE_ROWS_PER_PAGE, 10, 15, 25, 50, 100].map((item) => ({
+		id: item,
+		value: item
+	}));
 	//Take first of pageSizes to be initial page Size
 	const table = createTable(dataTable, {
 		page: addPagination({
@@ -54,31 +62,54 @@
 		table.createViewModel(columnsGenerator());
 	const { pageSize, hasNextPage, hasPreviousPage, pageIndex, pageCount, serverItemCount } =
 		pluginStates.page;
-	$: console.log($pageCount);
-	$: console.log($pageSize);
 	const { somePageRowsSelected, allPageRowsSelected, allRowsSelected } = pluginStates.select;
 	const { filterValue } = pluginStates.filter;
-	let params: ParamsQuery = {};
-	onMount(() => {
-		$serverItemCount = $dataTable.length;
-		filterValue.subscribe(
+	$: {
+		if (count <= $pageSize) {
+			noPagination = true;
+			params.offset = 0;
+			$pageIndex = 0;
+		} else {
+			noPagination = false;
+		}
+	}
+	// let params: ParamsQuery = {};
+	$serverItemCount = count;
+	function initSubscription() {
+		let fireFirstFilter = false;
+		let fireFirstPageSize = false;
+		let fireFirstPageIndex = false;
+		const unsubFilter = filterValue.subscribe(
 			debounce((query: string) => {
 				params = {
 					...params,
 					query
 				};
-				dispatch('load', params);
+				!fireFirstFilter ? (fireFirstFilter = true) : dispatch('load', params);
 			})
 		);
-		pageSize.subscribe(
-			debounce((limit: number) => {
-				params = {
-					...params,
-					limit
-				};
-				dispatch('load', params);
-			})
-		);
+		const unsubPageSize = pageSize.subscribe((limit: number) => {
+			params = {
+				...params,
+				limit
+			};
+			!fireFirstPageSize ? (fireFirstPageSize = true) : dispatch('load', params);
+		});
+		const unsubPageIndex = pageIndex.subscribe((index: number) => {
+			params = {
+				...params,
+				offset: index * $pageSize
+			};
+			!fireFirstPageIndex ? (fireFirstPageIndex = true) : dispatch('load', params);
+		});
+		return [unsubFilter, unsubPageSize, unsubPageIndex];
+	}
+	const arrSubs = initSubscription();
+	onDestroy(() => {
+		console.log('DESTROY SESSION');
+		for(var i = 0;i < arrSubs.length;i++){
+			arrSubs[i]()
+		}
 	});
 	function columnsGenerator() {
 		const arrColumns = columns.map((col) => {
@@ -283,22 +314,26 @@
 				id="pageSize"
 				bind:value={$pageSize}
 			>
-				{#each pageSizes as size, id}
+				{#each pageSizes as size (size.id)}
 					<option value={size.id}>{size.value}</option>
 				{/each}
 			</select>
 		</div>
 		<div class="text-sm text-gray-500 text-semibold">
-			{$pageIndex + 1} of {$serverItemCount} Pages
+			{$pageSize * $pageIndex + 1} / {$pageSize * $pageIndex + $pageSize}
 		</div>
 		<nav class="isolate inline-flex space-x-2 rounded-md shadow-sm" aria-label="Pagination">
-			<button on:click={() => $pageIndex--} disabled={$hasNextPage} class="btn-icon variant-filled">
+			<button
+				on:click={() => $pageIndex--}
+				disabled={$hasNextPage || noPagination}
+				class="btn-icon variant-filled"
+			>
 				<span class="sr-only">Previous</span>
 				←
 			</button>
 			<button
 				on:click={() => $pageIndex++}
-				disabled={$hasPreviousPage}
+				disabled={$hasPreviousPage || noPagination}
 				class="btn-icon variant-filled"
 			>
 				<span class="sr-only">Next</span>

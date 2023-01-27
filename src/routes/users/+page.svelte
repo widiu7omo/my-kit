@@ -7,13 +7,12 @@
 	import AdminLayout from '$lib/layouts/AdminLayout.svelte';
 	// import Fieldset from '$lib/components/commons/Fieldset.svelte';
 	import type { RouterInputs, RouterOutputs } from '$lib/trpc/router';
-	import { savable } from '$lib/saveable';
 	import { invalidateAll } from '$app/navigation';
 	import { TRPCClientError } from '@trpc/client';
 	// import Form from '$lib/components/commons/Form.svelte';
 	import toast from 'svelte-french-toast';
 	import { getInvocationMessage, isJson } from '$lib/helpers/data';
-	import { writable } from 'svelte/store';
+	import { writable, type Writable } from 'svelte/store';
 	import Table, {
 		type ColumnTable,
 		type ParamsQuery
@@ -22,18 +21,26 @@
 	import { modalStore, type ModalComponent, type ModalSettings } from '@skeletonlabs/skeleton';
 	import { browser } from '$app/environment';
 	import ModalUser from '$lib/modules/users/ModalUser.svelte';
-	export let data: { users: RouterOutputs['users']['list'] };
+	let params: ParamsQuery = {};
+	export let data: {
+		users: RouterOutputs['users']['list'];
+		count: RouterOutputs['users']['count'];
+	};
 	let loading = false;
 	let busy = false;
 	const dataTable = writable(data.users);
-
-	const loadData = async (params?: ParamsQuery) => {
+	let count = data.count;
+	const loadData = async () => {
 		loading = true;
 		$dataTable = await trpc($page).users.list.query({
-			query: params?.query,
-			limit: params?.limit,
-			offset: params?.offset
+			query: params.query,
+			limit: params.limit,
+			offset: params.offset
 		});
+		count = await trpc($page).users.count.query({
+			query: params.query
+		});
+		console.log(count);
 		loading = false;
 	};
 	const columns: ColumnTable<User>[] = [
@@ -63,11 +70,15 @@
 					name: '',
 					email: ''
 				},
-				fnAfterSave: (e: CustomEvent) => {
+				fnAfterSave: () => {
 					loadData();
-					console.log('AFTER SAVE', e.detail);
+					console.log('AFTER SAVE');
+					if (browser) {
+						modalStore.close();
+						modalStore.clear();
+					}
 				},
-				fnOnCancel: (e: CustomEvent) => console.log('AFTER CANCEL', e.detail)
+				fnOnCancel: () => console.log('AFTER CANCEL')
 			}
 		};
 		if (browser) modalStore.trigger(setting);
@@ -86,14 +97,14 @@
 				},
 				meta: {
 					item: $dataTable[indexRow],
-					fnAfterSave: (e: CustomEvent) => {
+					fnAfterSave: () => {
 						loadData();
 						if (browser) {
 							modalStore.close();
 							modalStore.clear();
 						}
 					},
-					fnOnCancel: (e: CustomEvent) => console.log('AFTER CANCEL', e.detail)
+					fnOnCancel: () => console.log('AFTER CANCEL')
 				}
 			};
 			if (browser) modalStore.trigger(setting);
@@ -131,8 +142,14 @@
 			busy = false;
 		}
 	};
-	const handleLoadData = (e: CustomEvent) => {
-		loadData(e.detail);
+	const handleLoadData = (e: CustomEvent<ParamsQuery>) => {
+		// $page.url.searchParams.set('query', String(e.detail?.query));
+		// $page.url.searchParams.set('offset', String(e.detail?.offset));
+		// $page.url.searchParams.set('limit', String(e.detail?.limit));
+		// if (browser) {
+		// 	window.history.replaceState(history.state, '', $page.url);
+		// }
+		loadData();
 	};
 </script>
 
@@ -154,7 +171,9 @@
 			class="max-w-screen xl:max-w-6xl"
 			{dataTable}
 			{columns}
+			bind:count
 			bind:loading
+			bind:params
 			on:delete={handleDelete}
 			on:edit={handleModalEditOpen}
 			on:load={handleLoadData}

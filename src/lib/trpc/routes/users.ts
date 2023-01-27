@@ -35,6 +35,24 @@ export const users = t.router({
 					: undefined
 			});
 		}),
+	count: t.procedure
+		.use(logger)
+		.input(
+			z
+				.object({
+					query: z.string().optional()
+				})
+				.optional()
+		)
+		.query(({ input }) =>
+			db.user.count({
+				where: input?.query
+					? {
+							OR: [{ name: { contains: input?.query } }, { email: { contains: input?.query } }]
+					  }
+					: undefined
+			})
+		),
 	save: t.procedure
 		.use(logger)
 		// .use(auth) // 👈 use auth middleware
