@@ -1,11 +1,6 @@
-<script context="module" lang="ts">
-	export interface ErrorInput {
-		message: string;
-		path: string[];
-	}
-</script>
-
 <script lang="ts">
+	import type { ErrorInput } from './Input.svelte';
+
 	export let debug: boolean = false;
 	export let name: string;
 	export let placeholder = '';
