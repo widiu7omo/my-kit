@@ -3,6 +3,7 @@
 	import Form from '$lib/components/commons/Form.svelte';
 	import Checkbox from '$lib/components/commons/inputs/Checkbox.svelte';
 	import Radiobox from '$lib/components/commons/inputs/Radiobox.svelte';
+	import Select from '$lib/components/commons/inputs/Select.svelte';
 	import TextInput from '$lib/components/commons/inputs/TextInput.svelte';
 	import AdminLayout from '$lib/layouts/AdminLayout.svelte';
 	import { onMount } from 'svelte';
@@ -44,9 +45,26 @@
 							name="demo"
 							{item}
 							{errors}
+							helpText="Please fill this demo"
+							placeholder="Input demo"
+						/>
+						<TextInput
+							label="Demo"
+							name="demo"
+							{item}
+							{errors}
 							required
 							helpText="Please fill this demo"
-							placeholder="Input demo value"
+							placeholder="Input required"
+						/>
+						<TextInput
+							label="Demo"
+							name="demo"
+							{item}
+							{errors}
+							disabled
+							helpText="Please fill this demo"
+							placeholder="Input disabled"
 						/>
 					</Fieldset>
 				</div>
@@ -58,6 +76,20 @@
 				<div slot="input">
 					<Fieldset name="Input Checkbox">
 						<Checkbox label="Demo Checkbox" {item} {errors} name="demoCheckbox" />
+						<Checkbox
+							label="Demo Checkbox Required"
+							required
+							{item}
+							{errors}
+							name="demoCheckboxRequired"
+						/>
+						<Checkbox
+							label="Demo Checkbox Disabled"
+							disabled
+							{item}
+							{errors}
+							name="demoCheckboxDisabled"
+						/>
 					</Fieldset>
 				</div>
 				<div slot="action" class="flex items-end justify-end">
@@ -68,6 +100,18 @@
 				<div slot="input">
 					<Fieldset name="Input Radio">
 						<Radiobox label="Demo Radiobox" {item} {errors} name="demoRadio" />
+						<Radiobox label="Demo Radiobox" required {item} {errors} name="demoRadioRequired" />
+						<Radiobox label="Demo Radiobox" {item} {errors} disabled name="demoRadioDisabled" />
+					</Fieldset>
+				</div>
+				<div slot="action" class="flex items-end justify-end">
+					<button type="submit" class="btn variant-filled-primary btn-sm">Save</button>
+				</div>
+			</Form>
+			<Form on:save={handleSave} on:cancel={handleCancel} bind:form>
+				<div slot="input">
+					<Fieldset name="Input Select">
+						<Select name="demoSelect" {item} {errors} required label="Input demo value" />
 					</Fieldset>
 				</div>
 				<div slot="action" class="flex items-end justify-end">

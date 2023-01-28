@@ -7,6 +7,7 @@
 	export let label = '';
 	export let helpText = '';
 	export let required = false;
+	export let disabled = false;
 	export let price = false;
 	export let item: Record<string, unknown> | null;
 	export let errors: ErrorInput[] | null = null;
@@ -41,13 +42,15 @@
 		>{label}
 		{#if required}
 			<span class="text-red-500">*</span>
-		{/if}</label
-	>
+		{/if}
+	</label>
 	<input
 		id={name}
 		{name}
 		{type}
 		{placeholder}
+		{required}
+		{disabled}
 		value={item?.[name] ?? ''}
 		on:focus={() => onFocus(name)}
 		on:input={handleInput}

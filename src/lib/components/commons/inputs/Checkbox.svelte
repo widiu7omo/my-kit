@@ -5,6 +5,8 @@
 	export let name: string;
 	export let item: Record<string, unknown> | null = null;
 	export let errors: ErrorInput[] | null = null;
+	export let required: boolean = false;
+	export let disabled: boolean = false;
 
 	$: errorInput = errors?.find((e) => e.path.includes(name));
 	const cLabelInputError = 'text-error-500-400-token';
@@ -15,6 +17,8 @@
 		id={name}
 		{name}
 		type="checkbox"
+		{required}
+		{disabled}
 		value={item?.[name] ?? ''}
 		class="w-4 h-4 bg-surface-200-700-token border-surface-300-600-token rounded "
 	/>
@@ -23,6 +27,9 @@
 		class="ml-2 text-sm font-medium {errorInput ? cLabelInputError : 'text-surface-600-300-token'}"
 	>
 		{label}
+		{#if required}
+			<span class="text-red-500">*</span>
+		{/if}
 		{#if errorInput}
 			<p id="helper-{name}" class="!text-xs font-normal text-error-400-500-token">
 				{errorInput.message}
