@@ -6,8 +6,6 @@
 </script>
 
 <script lang="ts">
-	import { classNames } from '$lib/helpers/ui';
-
 	export let debug: boolean = false;
 	export let name: string;
 	export let placeholder = '';
@@ -16,56 +14,7 @@
 	export let required = false;
 	export let price = false;
 	export let item: Record<string, unknown> | null;
-	export let size = '';
-	export let color = '';
-	export let variant = '';
 	export let errors: ErrorInput[] | null = null;
-
-	const getVariant = () => {
-		switch (variant) {
-			case 'bordered':
-				return 'input-bordered';
-			case 'ghost':
-				return 'input-ghost';
-			default:
-				return '';
-		}
-	};
-	const getColor = () => {
-		switch (color) {
-			case 'primary':
-				return 'input-primary';
-			case 'accent':
-				return 'input-accent';
-			case 'error':
-				return 'input-error';
-			case 'info':
-				return 'input-info';
-			case 'secondary':
-				return 'input-secondary';
-			case 'success':
-				return 'input-success';
-			case 'warning':
-				return 'input-warning';
-			default:
-				return '';
-		}
-	};
-	const getSize = () => {
-		switch (size) {
-			case 'lg':
-				return 'input-lg';
-			case 'md':
-				return 'input-md';
-			case 'sm':
-				return 'input-sm';
-			case 'xs':
-				return 'input-xs';
-			default:
-				return 'input-md';
-		}
-	};
-
 	let type = price ? 'number' : 'text';
 	$: errorInput = errors?.find((e) => e.path.includes(name));
 	function onFocus(name: string) {
@@ -89,7 +38,11 @@
 </script>
 
 <div class="form-control w-full">
-	<label for={name} class="block mb-2 text-sm font-medium {errorInput && cLabelInputError}"
+	<label
+		for={name}
+		class="block mb-2 text-sm font-medium {errorInput
+			? cLabelInputError
+			: 'text-surface-600-300-token'}"
 		>{label}
 		{#if required}
 			<span class="text-red-500">*</span>
