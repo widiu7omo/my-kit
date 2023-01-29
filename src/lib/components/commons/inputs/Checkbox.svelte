@@ -9,31 +9,35 @@
 	export let disabled: boolean = false;
 
 	$: errorInput = errors?.find((e) => e.path.includes(name));
+	const cInputRequired = "after:content-['*'] after:ml-0.5 after:text-red-500";
 	const cLabelInputError = 'text-error-500-400-token';
+	const cInputError =
+		'!border !border-error-300-600-token focus:!ring-error-50-900-token focus:!outline-none focus:!border-none focus:!ring-none focus:!outline-error-200-700-token focus:!border-error-400-500-token !bg-error-500/50 focus:!bg-error-500 dark:focus:!bg-error-400/30 dark:!bg-error-400 placeholder-error-500';
 </script>
 
-<div class="flex items-center mb-4">
+<div class="flex items-center h-5">
 	<input
 		id={name}
 		{name}
 		type="checkbox"
-		{required}
 		{disabled}
 		value={item?.[name] ?? ''}
-		class="w-4 h-4 bg-surface-200-700-token border-surface-300-600-token rounded "
+		class="w-4 h-4 bg-surface-200-700-token border-surface-300-600-token ring-offset-surface-200 dark:ring-offset-surface-700 rounded {errorInput &&
+			cInputError}"
 	/>
-	<label
-		for={name}
-		class="ml-2 text-sm font-medium {errorInput ? cLabelInputError : 'text-surface-600-300-token'}"
-	>
-		{label}
-		{#if required}
-			<span class="text-red-500">*</span>
-		{/if}
+	<div class="ml-2 text-sm">
+		<label
+			for={name}
+			class="text-sm {required && cInputRequired} font-medium {errorInput
+				? cLabelInputError
+				: 'text-surface-600-300-token'}"
+		>
+			{label}
+		</label>
 		{#if errorInput}
 			<p id="helper-{name}" class="!text-xs font-normal text-error-400-500-token">
 				{errorInput.message}
 			</p>
 		{/if}
-	</label>
+	</div>
 </div>

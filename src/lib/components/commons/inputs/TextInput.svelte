@@ -25,6 +25,7 @@
 			item[name] = val;
 		}
 	};
+	const cInputRequired = "after:content-['*'] after:ml-0.5 after:text-red-500";
 	const cLabelInputError = 'text-error-500-400-token';
 	const cInputError =
 		'!border !border-error-300-600-token focus:!border-error-400-500-token !bg-error-50/20 dark:!bg-error-900/20 placeholder-error-500';
@@ -36,20 +37,16 @@
 <div class="form-control w-full">
 	<label
 		for={name}
-		class="block mb-2 text-sm font-medium {errorInput
+		class="block mb-2 text-sm font-medium {required && cInputRequired} {errorInput
 			? cLabelInputError
 			: 'text-surface-600-300-token'}"
 		>{label}
-		{#if required}
-			<span class="text-red-500">*</span>
-		{/if}
 	</label>
 	<input
 		id={name}
 		{name}
 		{type}
 		{placeholder}
-		{required}
 		{disabled}
 		value={item?.[name] ?? ''}
 		on:focus={() => onFocus(name)}
@@ -57,9 +54,11 @@
 		aria-invalid={errorInput ? 'true' : undefined}
 		class="{errorInput && cInputError} text-sm rounded-lg block w-full p-2.5"
 	/>
-	<p class="mt-2 text-xs">
+	<p class="mt-1 text-xs">
 		{#if errorInput}
-			<span class="text-xs font-medium {cLabelInputError}">{errorInput.message}</span>
+			<p id="helper-{name}" class="!text-xs font-normal text-error-400-500-token">
+				{errorInput.message}
+			</p>
 		{:else}
 			<span class="text-xs text-surface-400-500-token">{helpText}</span>
 		{/if}

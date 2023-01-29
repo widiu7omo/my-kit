@@ -4,6 +4,7 @@
 	import Checkbox from '$lib/components/commons/inputs/Checkbox.svelte';
 	import Radiobox from '$lib/components/commons/inputs/Radiobox.svelte';
 	import Select from '$lib/components/commons/inputs/Select.svelte';
+	import Textarea from '$lib/components/commons/inputs/Textarea.svelte';
 	import TextInput from '$lib/components/commons/inputs/TextInput.svelte';
 	import AdminLayout from '$lib/layouts/AdminLayout.svelte';
 	import { onMount } from 'svelte';
@@ -11,7 +12,7 @@
 	let form: HTMLFormElement;
 	let errors: { message: string; path: string[] }[] | null = null;
 	let testError = `
-	[{"code":"invalid_type","expected":"string","received":"null","path":["demo"],"message":"Expected string, received null"},{"code":"invalid_type","expected":"string","received":"null","path":["demoCheckbox"],"message":"Expected string, received null"},{"code":"invalid_type","expected":"string","received":"null","path":["demoRadio"],"message":"Expected string, received null"},{"code":"invalid_type","expected":"string","received":"null","path":["demoTextArea"],"message":"Expected string, received null"},{"code":"invalid_type","expected":"string","received":"null","path":["demoSelect"],"message":"Expected string, received null"}]
+	[{"code":"invalid_type","expected":"string","received":"null","path":["demo"],"message":"Expected string, received null"},{"code":"invalid_type","expected":"string","received":"null","path":["demoCheckbox"],"message":"Expected string, received null"},{"code":"invalid_type","expected":"string","received":"null","path":["demoRadio"],"message":"Expected string, received null"},{"code":"invalid_type","expected":"string","received":"null","path":["demoTextarea"],"message":"Expected string, received null"},{"code":"invalid_type","expected":"string","received":"null","path":["demoSelect"],"message":"Expected string, received null"}]
 	`;
 	const handleSave = (e: CustomEvent) => {
 		errors = JSON.parse(testError);
@@ -111,7 +112,15 @@
 			<Form on:save={handleSave} on:cancel={handleCancel} bind:form>
 				<div slot="input">
 					<Fieldset name="Input Select">
-						<Select name="demoSelect" {item} {errors} required label="Input demo value" />
+						<Select
+							placeholder="Please select item"
+							name="demoSelect"
+							{item}
+							{errors}
+							items={[{ label: 'Value 1', value: '1' }]}
+							required
+							label="Input select demo"
+						/>
 					</Fieldset>
 				</div>
 				<div slot="action" class="flex items-end justify-end">
@@ -121,13 +130,14 @@
 			<Form on:save={handleSave} on:cancel={handleCancel} bind:form>
 				<div slot="input">
 					<Fieldset name="Input Select">
-						<TextInput
-							label="Demo"
-							name="demo"
+						<Textarea
+							label="Demo Textarea"
+							name="demoTextarea"
 							{item}
 							{errors}
 							required
-							placeholder="Input demo value"
+							placeholder="Fill your message"
+							helpText="Tell your story"
 						/>
 					</Fieldset>
 				</div>
