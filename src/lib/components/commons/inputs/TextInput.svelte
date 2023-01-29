@@ -9,9 +9,11 @@
 	export let required = false;
 	export let disabled = false;
 	export let price = false;
+	export let secure = false;
 	export let item: Record<string, unknown> | null;
 	export let errors: ErrorInput[] | null = null;
 	let type = price ? 'number' : 'text';
+	type = secure ? 'password' : type;
 	$: errorInput = errors?.find((e) => e.path.includes(name));
 	function onFocus(name: string) {
 		if (item?.[name]) {

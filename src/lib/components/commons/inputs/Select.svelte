@@ -40,6 +40,7 @@
 <select
 	{disabled}
 	id={name}
+	{name}
 	value={item?.[name]}
 	class="text-sm font-base {errorInput
 		? cLabelInputError

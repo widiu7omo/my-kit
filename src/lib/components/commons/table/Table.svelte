@@ -168,6 +168,10 @@
 		const props: CustomEventProps = { id: detail.id };
 		dispatch('edit', props);
 	};
+	const handleRowClick = (id: string) => {
+		const props: CustomEventProps = { id };
+		dispatch('rowClick', props);
+	};
 	const confirmDelete = ({ detail }: CustomEvent<CustomEventProps>) => {
 		const d: ModalSettings = {
 			type: 'confirm',
@@ -185,7 +189,7 @@
 </script>
 
 <div
-	class="table-container space-y-6 bg-surface-100-800-token p-6 border border-surface-300-600-token mx-auto {$$props.class ??
+	class="rounded-container-token space-y-6 bg-surface-100-800-token p-6 border border-surface-300-600-token mx-auto {$$props.class ??
 		''}"
 >
 	<div
@@ -210,100 +214,106 @@
 			</div>
 		</div>
 	</div>
-	<table class="w-full table table-interactive table-cell-fit " {...$tableAttrs}>
-		<!-- head -->
-		<thead>
-			{#each $headerRows as headerRow (headerRow.id)}
-				<Subscribe rowAttrs={headerRow.attrs()} let:rowAttrs>
-					<tr {...rowAttrs}>
-						{#each headerRow.cells as cell (cell.id)}
-							{#if cell.id === 'selected'}
-								<th>
-									<TableCheckbox
-										isSelected={allPageRowsSelected}
-										isSomeSubRowsSelected={pluginStates.select.someRowsSelected}
-									/>
-								</th>
-							{:else}
-								<Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
-									<th use:props.resize {...attrs} on:click={props.sort.toggle}>
-										<div class="resizer" use:props.resize.drag />
-										<Render of={cell.render()} />
-										{#if props.sort.order === 'asc'}
-											<ChevronDown class="w-4 h-4 inline" />
-										{:else if props.sort.order === 'desc'}
-											<ChveronUp class="w-4 h-4 inline" />
-										{/if}
+	<div class="table-container">
+		<table class="w-full table table-interactive table-cell-fit " {...$tableAttrs}>
+			<!-- head -->
+			<thead>
+				{#each $headerRows as headerRow (headerRow.id)}
+					<Subscribe rowAttrs={headerRow.attrs()} let:rowAttrs>
+						<tr {...rowAttrs}>
+							{#each headerRow.cells as cell (cell.id)}
+								{#if cell.id === 'selected'}
+									<th>
+										<TableCheckbox
+											isSelected={allPageRowsSelected}
+											isSomeSubRowsSelected={pluginStates.select.someRowsSelected}
+										/>
 									</th>
-								</Subscribe>
-							{/if}
-						{/each}
+								{:else}
+									<Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
+										<th use:props.resize {...attrs} on:click={props.sort.toggle}>
+											<div class="resizer" use:props.resize.drag />
+											<Render of={cell.render()} />
+											{#if props.sort.order === 'asc'}
+												<ChevronDown class="w-4 h-4 inline" />
+											{:else if props.sort.order === 'desc'}
+												<ChveronUp class="w-4 h-4 inline" />
+											{/if}
+										</th>
+									</Subscribe>
+								{/if}
+							{/each}
+						</tr>
+					</Subscribe>
+				{/each}
+			</thead>
+			<tbody {...$tableBodyAttrs}>
+				{#if loading}
+					<tr>
+						<td rowspan="2" colspan={columns.length + 2} class="text-center h-40"
+							>Please wait, fetching the data...</td
+						>
 					</tr>
-				</Subscribe>
-			{/each}
-		</thead>
-		<tbody {...$tableBodyAttrs}>
-			{#if loading}
-				<tr>
-					<td rowspan="2" colspan={columns.length + 2} class="text-center h-40"
-						>Please wait, fetching the data...</td
-					>
-				</tr>
-			{:else}
-				{#each $pageRows as row (row.id)}
-					<Subscribe rowAttrs={row.attrs()} let:rowAttrs rowProps={row.props()} let:rowProps>
-						<tr {...rowAttrs} class:selected={rowProps.select.selected}>
-							{#each row.cells as cell (cell.id)}
+				{:else}
+					{#each $pageRows as row (row.id)}
+						<Subscribe rowAttrs={row.attrs()} let:rowAttrs rowProps={row.props()} let:rowProps>
+							<tr {...rowAttrs} class:selected={rowProps.select.selected}>
+								{#each row.cells as cell (cell.id)}
+									<Subscribe attrs={cell.attrs()} let:attrs>
+										<td
+											{...attrs}
+											class:pl-4={cell.id === 'selected'}
+											on:click={() => cell.id !== 'actions' && handleRowClick(row.id)}
+										>
+											{#if cell.id === 'actions'}
+												<TableActions
+													componentId={row.id}
+													{row}
+													on:edit={handleEdit}
+													on:delete={confirmDelete}
+												/>
+											{:else}
+												<p class="line-clamp-2">
+													<Render of={cell.render()} />
+												</p>
+											{/if}
+										</td>
+									</Subscribe>
+								{/each}
+							</tr>
+						</Subscribe>
+					{:else}
+						<tr>
+							<td colspan={$visibleColumns.length} class="text-center py-6 my-11">
+								<p>
+									{#if $filterValue}
+										No data found with keyword : {$filterValue}
+									{:else}
+										No data found
+									{/if}
+								</p>
+							</td>
+						</tr>
+					{/each}
+				{/if}
+			</tbody>
+			<tfoot>
+				{#each $headerRows as headerRow (headerRow.id)}
+					<Subscribe rowAttrs={headerRow.attrs()} let:rowAttrs>
+						<tr {...rowAttrs} class="bg-surface-200-700-token">
+							{#each headerRow.cells as cell (cell.id)}
 								<Subscribe attrs={cell.attrs()} let:attrs>
-									<td {...attrs} class:pl-4={cell.id === 'selected'}>
-										{#if cell.id === 'actions'}
-											<TableActions
-												componentId={row.id}
-												{row}
-												on:edit={handleEdit}
-												on:delete={confirmDelete}
-											/>
-										{:else}
-											<p class="line-clamp-2">
-												<Render of={cell.render()} />
-											</p>
-										{/if}
-									</td>
+									<th {...attrs} class="text-left px-2 py-2">
+										<Render of={cell.render()} />
+									</th>
 								</Subscribe>
 							{/each}
 						</tr>
 					</Subscribe>
-				{:else}
-					<tr>
-						<td colspan={$visibleColumns.length} class="text-center py-6 my-11">
-							<p>
-								{#if $filterValue}
-									No data found with keyword : {$filterValue}
-								{:else}
-									No data found
-								{/if}
-							</p>
-						</td>
-					</tr>
 				{/each}
-			{/if}
-		</tbody>
-		<tfoot>
-			{#each $headerRows as headerRow (headerRow.id)}
-				<Subscribe rowAttrs={headerRow.attrs()} let:rowAttrs>
-					<tr {...rowAttrs} class="bg-surface-200-700-token">
-						{#each headerRow.cells as cell (cell.id)}
-							<Subscribe attrs={cell.attrs()} let:attrs>
-								<th {...attrs} class="text-left px-2 py-2">
-									<Render of={cell.render()} />
-								</th>
-							</Subscribe>
-						{/each}
-					</tr>
-				</Subscribe>
-			{/each}
-		</tfoot>
-	</table>
+			</tfoot>
+		</table>
+	</div>
 	<div
 		class="flex flex-row justify-between px-3 py-3 items-center bg-surface-200-700-token border border-surface-300-600-token rounded-container-token"
 	>
