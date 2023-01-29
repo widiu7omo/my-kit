@@ -11,6 +11,7 @@
 	import toast from 'svelte-french-toast';
 	import { TRPCClientError } from '@trpc/client';
 	import { getInvocationMessage, isJson } from '$lib/helpers/data';
+	import Select from '$lib/components/commons/inputs/Select.svelte';
 	let item: RouterInputs['users']['save'] | null = null;
 	let errors: { message: string; path: string[] }[] | null = null;
 	let form: HTMLFormElement;
@@ -71,6 +72,19 @@
 				<input type="hidden" name="id" value={item?.id ?? null} />
 				<TextInput name="name" label="Name" required {errors} {item} />
 				<TextInput name="email" label="E-mail" required {errors} {item} />
+				<Select
+					name="provider_id"
+					label="Providers"
+					placeholder="Please select the provider"
+					{item}
+					{errors}
+					items={[
+						{ label: 'Github', value: 'github' },
+						{ label: 'Google', value: 'google' },
+						{ label: 'Facebook', value: 'facebook' }
+					]}
+				/>
+				<TextInput name="hashed_password" label="Password" required {errors} {item} secure />
 			</Fieldset>
 		</div>
 		<div slot="action" class="flex items-end justify-end">

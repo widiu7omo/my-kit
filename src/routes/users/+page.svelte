@@ -47,13 +47,15 @@
 			filterable: false
 		},
 		{ header: 'Name', accessor: 'name', width: 300 },
-		{ header: 'E-mail', accessor: 'email' }
+		{ header: 'E-mail', accessor: 'email' },
+		{ header: 'Provider', accessor: 'provider_id' },
+		{ header: 'Password', accessor: 'hashed_password' }
 	];
 
 	const handleModalAddOpen = () => {
 		const component: ModalComponent = { ref: ModalUser };
 		const setting: ModalSettings = {
-			modalClasses: '!max-w-[500px]',
+			modalClasses: '!max-w-[500px] !bg-surface-50-900-token',
 			type: 'component',
 			title: 'Create new user',
 			component,
@@ -167,6 +169,7 @@
 			on:delete={handleDelete}
 			on:edit={handleModalEditOpen}
 			on:load={handleLoadData}
+			on:rowClick={handleModalEditOpen}
 		/>
 	</div>
 </AdminLayout>

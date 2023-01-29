@@ -23,7 +23,9 @@ export const users = t.router({
 				select: {
 					id: true,
 					name: true,
-					email: true
+					email: true,
+					provider_id: true,
+					hashed_password: true
 				},
 				orderBy: {
 					name: 'desc'
@@ -63,7 +65,8 @@ export const users = t.router({
 				id: z.string().nullable(),
 				provider_id: z.string(),
 				name: z.string().min(3).max(50).nullable(),
-				email: z.string().email()
+				email: z.string().email(),
+				hashed_password: z.string()
 			})
 		)
 		.mutation(async ({ input: { id, ...rest } }) => {
