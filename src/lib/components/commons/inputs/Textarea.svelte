@@ -25,9 +25,6 @@
 			? cLabelInputError
 			: 'text-surface-600-300-token'}"
 		>{label}
-		{#if required}
-			<span class="text-red-500">*</span>
-		{/if}
 	</label>
 	<textarea
 		id={name}

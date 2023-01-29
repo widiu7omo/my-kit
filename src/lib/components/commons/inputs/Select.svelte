@@ -41,7 +41,7 @@
 	{disabled}
 	id={name}
 	value={item?.[name]}
-	class="text-sm font-medium {errorInput
+	class="text-sm font-base {errorInput
 		? cLabelInputError
 		: 'text-surface-600-300-token'} {errorInput && cInputError}"
 >

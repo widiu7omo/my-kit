@@ -77,20 +77,8 @@
 				<div slot="input">
 					<Fieldset name="Input Checkbox">
 						<Checkbox label="Demo Checkbox" {item} {errors} name="demoCheckbox" />
-						<Checkbox
-							label="Demo Checkbox Required"
-							required
-							{item}
-							{errors}
-							name="demoCheckboxRequired"
-						/>
-						<Checkbox
-							label="Demo Checkbox Disabled"
-							disabled
-							{item}
-							{errors}
-							name="demoCheckboxDisabled"
-						/>
+						<Checkbox label="Demo Checkbox Required" required {item} {errors} name="demoCheckbox" />
+						<Checkbox label="Demo Checkbox Disabled" disabled {item} {errors} name="demoCheckbox" />
 					</Fieldset>
 				</div>
 				<div slot="action" class="flex items-end justify-end">
@@ -101,8 +89,8 @@
 				<div slot="input">
 					<Fieldset name="Input Radio">
 						<Radiobox label="Demo Radiobox" {item} {errors} name="demoRadio" />
-						<Radiobox label="Demo Radiobox" required {item} {errors} name="demoRadioRequired" />
-						<Radiobox label="Demo Radiobox" {item} {errors} disabled name="demoRadioDisabled" />
+						<Radiobox label="Demo Radiobox required" required {item} {errors} name="demoRadio" />
+						<Radiobox label="Demo Radiobox disabled" {item} {errors} disabled name="demoRadio" />
 					</Fieldset>
 				</div>
 				<div slot="action" class="flex items-end justify-end">
@@ -118,8 +106,25 @@
 							{item}
 							{errors}
 							items={[{ label: 'Value 1', value: '1' }]}
-							required
 							label="Input select demo"
+						/>
+						<Select
+							placeholder="Please select item"
+							name="demoSelect"
+							{item}
+							{errors}
+							items={[{ label: 'Value 1', value: '1' }]}
+							required
+							label="Input select demo required"
+						/>
+						<Select
+							placeholder="Please select item"
+							name="demoSelect"
+							{item}
+							{errors}
+							items={[{ label: 'Value 1', value: '1' }]}
+							disabled
+							label="Input select demo disabled"
 						/>
 					</Fieldset>
 				</div>
@@ -135,7 +140,24 @@
 							name="demoTextarea"
 							{item}
 							{errors}
+							placeholder="Fill your message"
+							helpText="Tell your story"
+						/>
+						<Textarea
+							label="Demo Textarea Required"
+							name="demoTextarea"
+							{item}
+							{errors}
 							required
+							placeholder="Fill your message"
+							helpText="Tell your story"
+						/>
+						<Textarea
+							label="Demo Textarea Disabled"
+							name="demoTextarea"
+							{item}
+							{errors}
+							disabled
 							placeholder="Fill your message"
 							helpText="Tell your story"
 						/>
