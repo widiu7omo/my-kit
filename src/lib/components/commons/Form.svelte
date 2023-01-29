@@ -3,7 +3,7 @@
 	export let form: HTMLFormElement;
 	export type T = $$Generic;
 	export let arrayFields: string[] | undefined = undefined;
-	const dispatch = createEventDispatcher<{ cancel: never; save: T }>();
+	const dispatch = createEventDispatcher<{ cancel: never; submit: T }>();
 	const handleCancel = () => {
 		dispatch('cancel');
 	};
@@ -23,7 +23,7 @@
 				data[key] = value;
 			}
 		}
-		dispatch('save', data as T);
+		dispatch('submit', data as T);
 	};
 </script>
 

@@ -7,7 +7,7 @@
 	export let errors: ErrorInput[] | null = null;
 	export let required: boolean = false;
 	export let disabled: boolean = false;
-
+	export let customLabelStyle: string = '';
 	$: errorInput = errors?.find((e) => e.path.includes(name));
 	const cInputRequired = "after:content-['*'] after:ml-0.5 after:text-red-500";
 	const cLabelInputError = 'text-error-500-400-token';
@@ -30,7 +30,7 @@
 			for={name}
 			class="text-sm {required && cInputRequired} font-medium {errorInput
 				? cLabelInputError
-				: 'text-surface-600-300-token'}"
+				: 'text-surface-600-300-token'} {customLabelStyle}"
 		>
 			{label}
 		</label>

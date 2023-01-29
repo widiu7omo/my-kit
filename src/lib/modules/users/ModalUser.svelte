@@ -66,7 +66,7 @@
 </script>
 
 <div class={cBase}>
-	<Form on:save={handleSave} on:cancel={handleCancel} bind:form>
+	<Form on:submit={handleSave} on:cancel={handleCancel} bind:form>
 		<div slot="input">
 			<Fieldset name="Basic Information">
 				<input type="hidden" name="id" value={item?.id ?? null} />

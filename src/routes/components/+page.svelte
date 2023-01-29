@@ -38,7 +38,7 @@
 <AdminLayout>
 	<div class="p-8 mx-auto">
 		<div class="grid grid-cols-4 gap-4">
-			<Form on:save={handleSave} on:cancel={handleCancel} bind:form>
+			<Form on:submit={handleSave} on:cancel={handleCancel} bind:form>
 				<div slot="input">
 					<Fieldset name="Input Text Field">
 						<TextInput
@@ -73,7 +73,7 @@
 					<button type="submit" class="btn variant-filled-primary btn-sm">Save</button>
 				</div>
 			</Form>
-			<Form on:save={handleSave} on:cancel={handleCancel} bind:form>
+			<Form on:submit={handleSave} on:cancel={handleCancel} bind:form>
 				<div slot="input">
 					<Fieldset name="Input Checkbox">
 						<Checkbox label="Demo Checkbox" {item} {errors} name="demoCheckbox" />
@@ -85,7 +85,7 @@
 					<button type="submit" class="btn variant-filled-primary btn-sm">Save</button>
 				</div>
 			</Form>
-			<Form on:save={handleSave} on:cancel={handleCancel} bind:form>
+			<Form on:submit={handleSave} on:cancel={handleCancel} bind:form>
 				<div slot="input">
 					<Fieldset name="Input Radio">
 						<Radiobox label="Demo Radiobox" {item} {errors} name="demoRadio" />
@@ -97,7 +97,7 @@
 					<button type="submit" class="btn variant-filled-primary btn-sm">Save</button>
 				</div>
 			</Form>
-			<Form on:save={handleSave} on:cancel={handleCancel} bind:form>
+			<Form on:submit={handleSave} on:cancel={handleCancel} bind:form>
 				<div slot="input">
 					<Fieldset name="Input Select">
 						<Select
@@ -132,7 +132,7 @@
 					<button type="submit" class="btn variant-filled-primary btn-sm">Save</button>
 				</div>
 			</Form>
-			<Form on:save={handleSave} on:cancel={handleCancel} bind:form>
+			<Form on:submit={handleSave} on:cancel={handleCancel} bind:form>
 				<div slot="input">
 					<Fieldset name="Input Select">
 						<Textarea

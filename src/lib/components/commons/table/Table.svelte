@@ -318,18 +318,13 @@
 		class="flex flex-row justify-between px-3 py-3 items-center bg-surface-200-700-token border border-surface-300-600-token rounded-container-token"
 	>
 		<div>
-			<select
-				name="pageSize"
-				class="select select-sm text-gray-500"
-				id="pageSize"
-				bind:value={$pageSize}
-			>
+			<select name="pageSize" class="select select-sm " id="pageSize" bind:value={$pageSize}>
 				{#each pageSizes as size (size.id)}
 					<option value={size.id}>{size.value}</option>
 				{/each}
 			</select>
 		</div>
-		<div class="text-sm text-gray-500 text-semibold">
+		<div class="text-sm text-semibold">
 			{$pageSize * $pageIndex + 1} / {$pageSize * $pageIndex + $pageSize}
 		</div>
 		<nav class="isolate inline-flex space-x-2 rounded-md shadow-sm" aria-label="Pagination">
