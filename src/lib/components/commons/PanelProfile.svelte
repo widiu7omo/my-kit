@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { Avatar, LightSwitch, menu } from '@skeletonlabs/skeleton';
 	import { storeLightSwitch } from '@skeletonlabs/skeleton';
 </script>
@@ -28,8 +29,10 @@
 				</div>
 			</li>
 		</ul>
-		<button class="w-full btn btn-sm variant-filled-primary mt-5">
-			<span class="!text-center text-sm">Logout</span>
-		</button>
+		<form use:enhance method="post" action="/logout">
+			<button type="submit" class="w-full btn btn-sm variant-filled-primary mt-5">
+				<span class="!text-center text-sm">Logout</span>
+			</button>
+		</form>
 	</div>
 </div>

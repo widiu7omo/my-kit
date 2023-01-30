@@ -18,13 +18,7 @@ export const actions: Actions = {
 			return fail(400);
 		}
 		try {
-			const user = await auth.createUser('email', username, {
-				password,
-				attributes: {
-					username,
-					rememberMe
-				}
-			}); //return user with custom attributes, check app.d.ts root file
+			const user = await auth.authenticateUser('email', username, password); //return user with custom attributes, check app.d.ts root file
 			const session = await auth.createSession(user.userId);
 			locals.setSession(session);
 		} catch (e) {

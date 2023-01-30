@@ -12,8 +12,9 @@ declare namespace Lucia {
 	type Auth = import('$lib/prisma').Auth;
 	// eslint-disable-next-line @typescript-eslint/ban-types
 	type UserAttributes = {
-		username: string;
+		name?: string;
 		rememberMe?: boolean;
+		email?: string;
 	};
 }
 

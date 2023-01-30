@@ -11,7 +11,7 @@
 </script>
 
 <svelte:head>
-	<title>Login</title>
+	<title>Register</title>
 </svelte:head>
 <AuthLayout>
 	<div class="w-[480px] card p-8 mx-auto my-auto space-y-6 shadow">
@@ -19,39 +19,47 @@
 			<SearchIcon class="w-8 h-8 bg-gradient-to-t text-primary-400-500-token" />
 		</div>
 		<div>
-			<h3 class="font-bold">Welcome back</h3>
+			<h3 class="font-bold">Create your Account</h3>
 			<small class="text-surface-500-400-token"
-				>Start your website in seconds. Don't have an account? <a
-					href="/register"
-					class="font-medium text-primary-400-500-token !no-underline">Sign up</a
+				>Start your website in seconds. Already have an account? <a
+					href="/login"
+					class="font-medium text-primary-400-500-token !no-underline">Sign in here</a
 				></small
 			>
 		</div>
 		<form use:enhance method="post" class="space-y-2">
 			<div class="space-y-4">
-				<TextInput
-					name="email"
-					{item}
-					{errors}
-					label="Your email / username"
-					placeholder="name@company.com"
-				/>
-				<TextInput name="password" secure {item} {errors} label="Password" placeholder="••••••••" />
-				<div class="flex justify-between flex-row items-center">
-					<Checkbox
+				<div class="grid grid-cols-2 gap-4">
+					<TextInput name="name" {item} {errors} label="Full Name" placeholder="e.g Sam Sonny" />
+					<TextInput
+						name="email"
 						{item}
-						label="Remember Me"
-						customLabelStyle="!font-normal !text-surface-500-400-token"
 						{errors}
-						name="rememberMe"
+						label="Your email"
+						placeholder="name@company.com"
 					/>
-					<a href="/" class="font-medium text-xs text-primary-400-500-token !no-underline "
-						>Forgot Password?</a
-					>
+					<TextInput
+						secure
+						name="password"
+						{item}
+						{errors}
+						label="Password"
+						placeholder="••••••••"
+					/>
+					<TextInput
+						name="confirmPassword"
+						secure
+						{item}
+						{errors}
+						label="Confirm Password"
+						placeholder="••••••••"
+					/>
 				</div>
 			</div>
 			<div class="flex items-end justify-end">
-				<button type="submit" class="btn variant-filled-primary w-full mt-3">Sign in</button>
+				<button type="submit" class="btn variant-filled-primary w-full mt-3"
+					>Create an account</button
+				>
 			</div>
 		</form>
 		<div class="relative">
