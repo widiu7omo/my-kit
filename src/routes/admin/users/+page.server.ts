@@ -1,7 +1,7 @@
 import { TABLE_ROWS_PER_PAGE } from '$lib/constants/constant';
 import { createContext } from '$lib/trpc/context';
 import { router } from '$lib/trpc/router';
-import type { PageServerLoad } from './$types';
+import type { PageServerLoad } from '../../../../.svelte-kit/types/src/routes';
 
 export const load: PageServerLoad = async (event) => {
 	const session = await event.locals.validate();

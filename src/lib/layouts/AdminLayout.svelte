@@ -5,8 +5,6 @@
 	import { storeSidebarOpen } from '$lib/stores/commons/ui';
 	import { Toaster } from 'svelte-french-toast';
 </script>
-
-<!-- App Shell -->
 <AppShell>
 	<svelte:fragment slot="pageHeader">
 		<AppBar />
