@@ -8,7 +8,8 @@ import {errorInputGenerator} from "../../../lib/constants/errors";
 export const load: PageServerLoad = async ({locals}) => {
     const session = await locals.validate();
     if (session) {
-        throw redirect(302, '/');
+        // TODO: if leveling working, then define where user should redirect
+        throw redirect(302, '/admin');
     }
     return {};
 };
