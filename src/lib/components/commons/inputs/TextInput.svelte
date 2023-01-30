@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { ErrorInput } from './Input.svelte';
+	import type { ErrorInput } from './Input';
 
 	export let debug: boolean = false;
 	export let name: string;

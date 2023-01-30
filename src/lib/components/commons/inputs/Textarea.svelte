@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { error } from '@sveltejs/kit';
-	import type { ErrorInput } from './Input.svelte';
+	import type { ErrorInput } from './Input';
 
 	export let label: string;
 	export let placeholder: string;
