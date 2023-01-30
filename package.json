@@ -16,6 +16,7 @@
 		"db:push": "prisma db push"
 	},
 	"devDependencies": {
+		"@abineo/sveltekit-i18n": "^2.0.5",
 		"@playwright/test": "^1.30.0",
 		"@skeletonlabs/skeleton": "^0.99.5",
 		"@sveltejs/adapter-auto": "^1.0.2",

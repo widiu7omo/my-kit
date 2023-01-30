@@ -1,6 +1,8 @@
 import { auth } from '$lib/server/lucia';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
+import {LuciaError} from "lucia-auth";
+import {LOGIN_ERRORS} from "../../../lib/constants/errors";
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.validate();
@@ -15,6 +17,7 @@ export const actions: Actions = {
 		const form = await request.formData();
 		const name = form.get('name');
 		const email = form.get('email');
+		console.log(email)
 		const password = form.get('password');
 		const confirmPassword = form.get('confirmPassword');
 		if (password !== confirmPassword) {
@@ -43,8 +46,10 @@ export const actions: Actions = {
 			const session = await auth.createSession(user.userId);
 			locals.setSession(session);
 		} catch (e) {
-			console.log(e);
-			return fail(400);
+			if(e instanceof LuciaError){
+				return fail(403,{message:LOGIN_ERRORS[e.message]})
+			}
+			return fail(400,{message:"Internal Error"});
 		}
 	}
 };

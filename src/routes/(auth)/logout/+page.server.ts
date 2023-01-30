@@ -1,5 +1,5 @@
 import { auth } from '$lib/server/lucia';
-import { fail } from '@sveltejs/kit';
+import {fail, redirect} from '@sveltejs/kit';
 import type { Actions } from './$types';
 
 export const actions: Actions = {
@@ -8,5 +8,6 @@ export const actions: Actions = {
 		if (!session) return fail(401);
 		await auth.invalidateSession(session.sessionId);
 		locals.setSession(null);
+		throw redirect(302,'/login')
 	}
 };
