@@ -4,6 +4,11 @@
       "login_title": "Welcome Back",
       "login_desc": "Start your website in seconds. Don't have an account?",
       "sign_up": "Sign up"
+    },
+    "admin": {
+      "dashboard": {
+        "title": "Welcome to dashboard"
+      }
     }
   }
 }

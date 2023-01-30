@@ -1,0 +1,14 @@
+{
+  "page": {
+    "login": {
+      "login_title": "Selamat datang",
+      "login_desc": "Mulai websitemu dalam hitungan detik. Belum punya akun?",
+      "sign_up": "Daftar disini"
+    },
+    "admin": {
+      "dashboard": {
+        "title": "Selamat datang di dashboard"
+      }
+    }
+  }
+}

@@ -1,7 +1,14 @@
 <script lang="ts">
     import {enhance} from '$app/forms';
-    import {Avatar, LightSwitch, menu} from '@skeletonlabs/skeleton';
+    import {Avatar, LightSwitch, menu, SlideToggle} from '@skeletonlabs/skeleton';
     import {storeLightSwitch} from '@skeletonlabs/skeleton';
+    import {language} from "../../i18n/generated";
+
+    let valueChecked: boolean = true;
+    $:{
+        let lang = valueChecked ? 'en' : 'id'
+        language.set(lang)
+    }
 </script>
 
 <div class="relative">
@@ -22,6 +29,12 @@
             <li><a class="!px-4 !py-2 text-sm" href="/">Home</a></li>
             <li><a class="!px-4 !py-2 text-sm" href="/">Blog</a></li>
             <li><a class="!px-4 !py-2 text-sm" href="/">About</a></li>
+            <li>
+                <div class="!px-4 !py-2 flex justify-between">
+                    <p class="!text-sm">Lang : {valueChecked ? "en" : "id"}</p>
+                    <SlideToggle size="sm" bind:checked={valueChecked} label={valueChecked?"en":"id"}/>
+                </div>
+            </li>
             <li>
                 <div class="!px-4 !py-2 flex justify-between">
                     <p class="!text-sm">Theme : {$storeLightSwitch ? 'Dark' : 'Light'}</p>

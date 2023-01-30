@@ -2,6 +2,7 @@
 
 -[x] UI with Theme Customization
 -[x] Authentication
+-[ ] Social Authentication
 -[ ] Permission & Role (Pending)
 -[x] Prisma ORM
 -[x] TRPC (Typescript Remote Procedure Call)
