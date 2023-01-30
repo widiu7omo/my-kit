@@ -7,9 +7,15 @@
     import SearchIcon from '$lib/components/icons/SearchIcon.svelte';
     import AuthLayout from '$lib/layouts/AuthLayout.svelte';
     import {t} from "$lib/i18n/generated/index.js";
+    import type {ActionData} from "./$types";
+    import type {ErrorInput} from "$lib/components/commons/inputs/Input";
 
     let item: { username?: string; password?: string; rememberMe?: false } = {};
-    let errors: { message: string; path: string[] }[] | null = null;
+    let errors: ErrorInput[] | null;
+    export let form: ActionData;
+    $:{
+        errors = form?.errors as ErrorInput[]
+    }
 </script>
 
 <svelte:head>
@@ -22,13 +28,16 @@
         </div>
         <div>
             <h3 class="font-bold">{$t.page.login.login_title}</h3>
-            <small class="text-surface-500-400-token"
-            >{$t.page.login.login_desc}<a
-                    href="/register"
-                    class="font-medium text-primary-400-500-token !no-underline">Sign up</a
-            ></small>
+            <small class="text-surface-500-400-token">
+                {$t.page.login.login_desc}
+                <a
+                        href="/register"
+                        class="font-medium text-primary-400-500-token !no-underline">
+                    &nbsp;{$t.page.login.sign_up}
+                </a>
+            </small>
         </div>
-        <form use:enhance method="post" class="space-y-2">
+        <form use:enhance method="post" class="space-y-2" action="?/login">
             <div class="space-y-4">
                 <TextInput
                         name="email"

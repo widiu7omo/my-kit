@@ -2,7 +2,8 @@
   "page": {
     "login": {
       "login_title": "Welcome Back",
-      "login_desc": "Start your website in seconds. Don't have an account?"
+      "login_desc": "Start your website in seconds. Don't have an account?",
+      "sign_up": "Sign up"
     }
   }
 }

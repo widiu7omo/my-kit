@@ -6,14 +6,15 @@
     import GoogleIcon from '$lib/components/icons/GoogleIcon.svelte';
     import SearchIcon from '$lib/components/icons/SearchIcon.svelte';
     import AuthLayout from '$lib/layouts/AuthLayout.svelte';
+    import type {ErrorInput} from "$lib/components/commons/inputs/Input";
 
     let item: { username?: string; password?: string; rememberMe?: false } = {};
-    let errors: { message: string; path: string[] }[] | null = null;
+    let errors: ErrorInput[] | null;
     export let data: PageData
     export let form: ActionData;
 
     $:{
-        errors = form?.errors
+        errors = form?.errors as ErrorInput[]
     }
 </script>
 

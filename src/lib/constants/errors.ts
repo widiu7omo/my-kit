@@ -1,5 +1,6 @@
 import type {ErrorMessage} from "lucia-auth/auth/error";
 import type {ErrorInput} from "$lib/components/commons/inputs/Input";
+
 export type AuthErrorMessage = ErrorMessage & "AUTH_WRONG_CONFIRM_PASSWORD" | string
 
 export const LOGIN_ERRORS: Record<AuthErrorMessage, string> = {
@@ -17,7 +18,17 @@ export const LOGIN_ERRORS: Record<AuthErrorMessage, string> = {
     AUTH_DUPLICATE_PROVIDER_ID: "You already register on this site. Please sign in instead",
     AUTH_WRONG_CONFIRM_PASSWORD: "Your confirmation password are not match. Please try again"
 }
-export const errorInputGenerator = (message: AuthErrorMessage) => {
+export const errorInputGenerator = (message: string, ...fields: string[]) => {
+    const errors: ErrorInput[] = []
+    if (fields.length > 0) {
+        errors.push({
+            path: fields,
+            message
+        })
+    }
+    return errors;
+}
+export const errorInputGeneratorAuth = (message: AuthErrorMessage) => {
     const errors: ErrorInput[] = []
     if (LOGIN_ERRORS[message]) {
         errors.push({
