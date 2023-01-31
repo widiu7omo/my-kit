@@ -8,9 +8,8 @@
     import Faqs from "$lib/modules/front/Faqs.svelte";
     import Pricing from "$lib/modules/front/Pricing.svelte";
 </script>
-<svelte:window class="light"></svelte:window>
 <svelte:head>
-    <title>TaxPal - Accounting made simple for small businesses</title>
+    <title>My Kit - What the hell is going on</title>
     <meta name="description"
           content="Most bookkeeping software is accurate, but hard to use. We make the opposite trade-off, and hope you don’t get audited."/>
 </svelte:head>
