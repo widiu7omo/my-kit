@@ -17,7 +17,7 @@
 			<MenuBarIcon />
 		</button>
 	</svelte:fragment>
-	<span class="block border-l border-surface-200-700-token h-16" />
+	<span class="block border-l border-surface-200-700-token h-16"></span>
 	<svelte:fragment slot="trail">
 		<PanelNotifications />
 		<PanelProfile />
