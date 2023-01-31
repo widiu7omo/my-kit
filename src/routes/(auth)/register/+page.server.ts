@@ -50,6 +50,7 @@ export const actions: Actions = {
 
                 return fail(403, {errors: errorInputGeneratorAuth(e.message)})
             }
+            console.log(e)
             return fail(400, {message: "Internal Error"});
         }
     }

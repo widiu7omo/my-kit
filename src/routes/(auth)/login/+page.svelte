@@ -12,9 +12,22 @@
 
     let item: { username?: string; password?: string; rememberMe?: false } = {};
     let errors: ErrorInput[] | null;
+    let alertError: boolean = false;
+    let alertMessage: string = ''
+
+    const cleanUp = () => {
+        alertError = false;
+        alertMessage = ''
+    }
     export let form: ActionData;
     $:{
-        errors = form?.errors as ErrorInput[]
+        errors = (form ? form.errors : undefined) as ErrorInput[]
+        if (errors?.length > 0) {
+            if (errors[0].path.every(val => val === "")) {
+                alertError = true;
+                alertMessage = errors[0].message
+            }
+        }
     }
 </script>
 
@@ -27,6 +40,11 @@
             <SearchIcon class="w-8 h-8 bg-gradient-to-t text-primary-400-500-token"/>
         </div>
         <div>
+            {#if alertError}
+                <div class="bg-error-100/20 dark:bg-error-800/20 border border-error-400-500-token rounded-token p-3 mb-4">
+                    <p class="!text-xs font-medium text-error-400-500-token">{alertMessage}</p>
+                </div>
+            {/if}
             <h3 class="font-bold">{$t.page.login.login_title}</h3>
             <small class="text-surface-500-400-token">
                 {$t.page.login.login_desc}
@@ -41,6 +59,7 @@
             <div class="space-y-4">
                 <TextInput
                         name="email"
+                        on:focus={cleanUp}
                         {item}
                         {errors}
                         label="Your email / username"
