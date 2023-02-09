@@ -15,8 +15,20 @@ model User {
   provider_id     String    @unique
   name            String?
   email           String?
+  emailVerified   DateTime?
+  avatar          String?
   hashed_password String?
-  session         Session[]
+  createdAt       DateTime  @default(now()) @map(name: "created_at")
+  updatedAt       DateTime  @default(now()) @map(name: "updated_at")
+
+  paddleCustomerId            String?  @unique() @map(name: "user_id")
+  paddleSubscriptionId        String?  @unique() @map(name: "subscription_id")
+  paddleSubscriptionPlanId    String?  @map(name: "subscription_plan_id")
+  paddleNextBillDate          DateTime? @map(name: "next_bill_date")
+  paddleSubscriptionPaymentId String?  @map(name: "subscription_payment_id")
+
+  post    Post[]
+  session Session[]
 
   @@map("user")
 }
@@ -30,4 +42,18 @@ model Session {
 
   @@index([user_id])
   @@map("session")
+}
+
+model Post {
+  id        String   @id @unique
+  title     String
+  content   Json?
+  published Boolean  @default(false)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+  authorId  String
+
+  author User @relation(fields: [authorId], references: [id])
+
+  @@map(name: "posts")
 }
